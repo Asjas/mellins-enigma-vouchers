@@ -3,8 +3,16 @@
   "version": "1.0.0",
   "main": "start.js",
   "repository": "git@github.com:Asjas/mellins-enigma-vouchers.git",
-  "author": "Asjas <asjas@outlook.com>",
+  "author": "A-J Roos <aj@pienaarconsulting.co.za>",
   "private": true,
+  "engines": {
+    "npm": ">=6.0.0",
+    "node": ">=11.0.0"
+  },
+  "homepage": "https://github.com/Asjas/mellins-enigma-vouchers#readme",
+  "bugs": {
+    "url": "https://github.com/Asjas/mellins-enigma-vouchers/issues"
+  },
   "scripts": {
     "start": "pm2 start ./build/start.js",
     "prestart": "npm run build",
@@ -34,7 +42,7 @@
     "winston-daily-rotate-file": "^3.10.0"
   },
   "devDependencies": {
-    "@babel/core": "^7.0.0",
+    "@babel/core": "^7.5.5",
     "@types/body-parser": "^1.17.0",
     "@types/cors": "^2.8.5",
     "@types/dotenv": "^6.1.1",
