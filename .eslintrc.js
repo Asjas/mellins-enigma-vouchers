@@ -8,6 +8,8 @@ module.exports = {
     'plugin:jest/recommended',
   ],
   parserOptions: {
+    ecmaVersion: 2018,
+    sourceType: 'module',
     project: './tsconfig.json',
   },
   env: {
