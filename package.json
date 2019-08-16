@@ -1,0 +1,53 @@
+{
+  "name": "mellins-enigma-vouchers",
+  "version": "1.0.0",
+  "main": "start.js",
+  "repository": "git@github.com:Asjas/mellins-enigma-vouchers.git",
+  "author": "Asjas <asjas@outlook.com>",
+  "private": true,
+  "scripts": {
+    "start": "pm2 start ./build/start.js",
+    "prestart": "npm run build",
+    "dev": "ts-node-dev --respawn --transpileOnly ./src/start.ts",
+    "build": "npm-run-all clean lint tsc",
+    "clean": "rimraf dist/*",
+    "tsc": "tsc",
+    "lint": "eslint . /src",
+    "test": "jest",
+    "test:watch": "jest --watch"
+  },
+  "dependencies": {
+    "axios": "^0.19.0",
+    "body-parser": "^1.19.0",
+    "cors": "^2.8.5",
+    "dotenv": "^8.0.0",
+    "eslint": "^6.1.0",
+    "express": "^4.17.1",
+    "express-validator": "^6.1.1",
+    "express-winston": "^3.3.0",
+    "helmet": "^3.20.0",
+    "morgan": "^1.9.1",
+    "nodemailer": "^6.3.0",
+    "pm2": "^3.5.1",
+    "sequelize": "^5.15.0",
+    "winston": "^3.2.1",
+    "winston-daily-rotate-file": "^3.10.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.0.0",
+    "@types/body-parser": "^1.17.0",
+    "@types/cors": "^2.8.5",
+    "@types/dotenv": "^6.1.1",
+    "@types/express-winston": "^3.0.3",
+    "@types/helmet": "^0.0.43",
+    "@types/morgan": "^1.7.36",
+    "@types/node": "^12.7.2",
+    "@types/nodemailer": "^6.2.1",
+    "@types/sequelize": "^4.28.4",
+    "babel-jest": "^24.9.0",
+    "npm-run-all": "^4.1.5",
+    "rimraf": "^3.0.0",
+    "ts-node-dev": "^1.0.0-pre.41",
+    "typescript": "^3.5.3"
+  }
+}
