@@ -19,10 +19,11 @@ export async function voucher(req: Request, res: Response): Promise<void> {
   const { email, param } = req.body as { email: string; param: string };
   console.log(email);
   console.log(param);
+  const voucherId = '2000';
 
   if (email) {
     res.status(200).send('Success. Sending email containing the voucher code.');
 
-    await sendMail(email);
+    await sendMail(email, voucherId);
   }
 }
