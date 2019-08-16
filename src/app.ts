@@ -50,7 +50,11 @@ if (NODE_ENV === 'production') {
 }
 
 // Express header middleware
-app.use(helmet({ hidePoweredBy: true }));
+app.use(
+  helmet({
+    hidePoweredBy: true,
+  }),
+);
 
 // Express cors middleware
 app.use(
@@ -62,7 +66,11 @@ app.use(
 );
 
 // Express body parser
-app.use(bodyparser.urlencoded({ extended: true }));
+app.use(
+  bodyparser.urlencoded({
+    extended: true,
+  }),
+);
 app.use(bodyparser.json());
 
 // Expose our routes
@@ -70,7 +78,9 @@ app.use('/', router);
 
 // 404 route handler
 app.use(function(req, res, next) {
-  res.status(404).send({ error: '💥 Route does not exist!' });
+  res.status(404).send({
+    error: '💥 Route does not exist!',
+  });
   next();
 });
 

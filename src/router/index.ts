@@ -8,7 +8,9 @@ export const router = express.Router();
 const validBody = ['eyetest', '2459'];
 
 router.get('/', (req, res) => {
-  res.status(200).json({ status: '🚀' });
+  res.status(200).json({
+    status: '🚀',
+  });
 });
 
 router.post(

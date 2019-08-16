@@ -5,13 +5,13 @@ dotenv.config();
 
 const { MAIL_SMTP, MAIL_PORT, MAIL_USER, MAIL_PASS } = process.env;
 
-interface options {
+interface Options {
   host: any;
   port: any;
   auth: { user: any; pass: any };
 }
 
-export async function sendMail(email: string) {
+export async function sendMail(email: string): Promise<void> {
   const transporter = nodemailer.createTransport({
     host: MAIL_SMTP,
     port: MAIL_PORT,
@@ -23,14 +23,12 @@ export async function sendMail(email: string) {
       // do not fail on invalid certs
       rejectUnauthorized: false,
     },
-  } as options);
+  } as Options);
 
   await transporter.verify(function(error) {
     if (error) {
       throw error;
     }
-
-    return;
   });
 
   const message = {
