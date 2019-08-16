@@ -4,7 +4,7 @@ import { validationResult } from 'express-validator';
 import { sendMail } from '../services/nodemailer';
 
 // Validate `body` passed to /voucher route
-export function validateVoucher(req: Request, res: Response, next: NextFunction)  {
+export function validateVoucher(req: Request, res: Response, next: NextFunction) {
   const errors = validationResult(req);
 
   if (!errors.isEmpty()) {
@@ -16,7 +16,7 @@ export function validateVoucher(req: Request, res: Response, next: NextFunction)
 }
 
 export async function voucher(req: Request, res: Response) {
-  const { email, param } = req.body as { email: string, param: string };
+  const { email, param } = req.body as { email: string; param: string };
   console.log(email);
   console.log(param);
 

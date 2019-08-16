@@ -12,7 +12,7 @@ interface error {
 }
 
 export function catchErrors(fn: (req: Request, res: Response, next: NextFunction) => any) {
-  return function (req: Request, res: Response, next: NextFunction) {
+  return function(req: Request, res: Response, next: NextFunction) {
     return fn(req, res, next).catch((error: error) => {
       if (NODE_ENV !== 'production') {
         console.error(error);
@@ -22,4 +22,4 @@ export function catchErrors(fn: (req: Request, res: Response, next: NextFunction
       next();
     });
   };
-};
+}
