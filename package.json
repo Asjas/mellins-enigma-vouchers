@@ -14,11 +14,11 @@
     "url": "https://github.com/Asjas/mellins-enigma-vouchers/issues"
   },
   "scripts": {
-    "start": "pm2 start ./build/start.js",
+    "start": "node ./dist/start.js",
     "prestart": "npm run build",
     "dev": "ts-node-dev --respawn --transpileOnly ./src/start.ts",
     "build": "npm-run-all clean lint tsc",
-    "clean": "rimraf dist/*",
+    "clean": "rimraf ./dist",
     "tsc": "tsc",
     "lint": "eslint --ext .js,.ts ./src",
     "prettier": "prettier --write 'src/**/*.ts'",
@@ -37,8 +37,8 @@
     "mjml": "^4.4.1",
     "morgan": "^1.9.1",
     "nodemailer": "^6.3.0",
-    "pm2": "^3.5.1",
     "sequelize": "^5.15.0",
+    "typescript": "^3.5.3",
     "winston": "^3.2.1",
     "winston-daily-rotate-file": "^3.10.0"
   },
@@ -49,11 +49,13 @@
     "@types/dotenv": "^6.1.1",
     "@types/express-winston": "^3.0.3",
     "@types/helmet": "^0.0.43",
+    "@types/jest": "^24.0.17",
     "@types/mjml": "^4.0.2",
     "@types/morgan": "^1.7.36",
     "@types/node": "^12.7.2",
     "@types/nodemailer": "^6.2.1",
     "@types/sequelize": "^4.28.4",
+    "@types/supertest": "^2.0.8",
     "@typescript-eslint/eslint-plugin": "^2.0.0",
     "@typescript-eslint/parser": "^2.0.0",
     "babel-jest": "^24.9.0",
@@ -61,13 +63,14 @@
     "eslint-config-airbnb-base": "^14.0.0",
     "eslint-plugin-import": "^2.18.2",
     "eslint-plugin-jest": "^22.15.1",
-    "husky": "^3.0.3",
-    "lint-staged": "^9.2.1",
+    "husky": "^3.0.4",
+    "lint-staged": "^9.2.3",
     "npm-run-all": "^4.1.5",
     "prettier": "^1.18.2",
     "rimraf": "^3.0.0",
-    "ts-node-dev": "^1.0.0-pre.41",
-    "typescript": "^3.5.3"
+    "supertest": "^4.0.2",
+    "ts-jest": "^24.0.2",
+    "ts-node-dev": "^1.0.0-pre.41"
   },
   "husky": {
     "hooks": {
