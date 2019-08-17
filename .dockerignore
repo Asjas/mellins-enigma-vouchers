@@ -1,0 +1,17 @@
+node_modules
+logs
+build
+test
+npm-debug.log
+Dockerfile*
+docker-compose*
+.dockerignore
+.git
+.gitignore
+.prettier*
+.eslint*
+.env*
+README.md
+LICENSE
+.vscode
+jest.config.js
