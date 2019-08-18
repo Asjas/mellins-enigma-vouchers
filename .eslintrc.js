@@ -30,6 +30,7 @@ module.exports = {
     'prefer-arrow-callback': 0,
     'object-curly-newline': 0,
     'implicit-arrow-linebreak': 0,
+    'no-useless-constructor': 0,
     'function-paren-newline': 0,
     'arrow-parens': ['error', 'as-needed'],
     'no-unused-vars': [
