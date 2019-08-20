@@ -1,15 +1,28 @@
-import { Controller, Body, Post } from '@nestjs/common';
+import {
+  Controller,
+  Body,
+  Get,
+  Post,
+  Param,
+  UsePipes,
+  ValidationPipe,
+} from '@nestjs/common';
 import { VoucherService } from './voucher.service';
-import { Voucher } from './voucher.model';
+import { Voucher } from './interfaces/voucher.interface';
+import { CreateVoucherDto } from './dto/create-voucher.dto';
 
 @Controller('voucher')
 export class VoucherController {
   constructor(private readonly voucherService: VoucherService) {}
 
+  // @Get('/:id')
+  // getVoucherById(@Param('id') id: string): Voucher {
+  //   return this.voucherService.getVoucherById(id);
+  // }
+
   @Post()
-  voucher(@Body('email') email: string, @Body('param') param: string): Voucher {
-    console.log(email);
-    console.log(param);
-    return this.voucherService.createVoucher(email, param);
+  @UsePipes(ValidationPipe)
+  createVoucher(@Body() createVoucherDto: CreateVoucherDto): Voucher {
+    return this.voucherService.createVoucher(createVoucherDto);
   }
 }

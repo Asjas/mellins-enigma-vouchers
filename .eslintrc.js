@@ -85,5 +85,6 @@ module.exports = {
     ],
     '@typescript-eslint/indent': ['error', 2],
     '@typescript-eslint/no-explicit-any': 0,
+    'lines-between-class-members': 0,
   },
 };
