@@ -1,21 +1,31 @@
 import { Injectable } from '@nestjs/common';
 import { Voucher } from './interfaces/voucher.interface';
 import { CreateVoucherDto } from './dto/create-voucher.dto';
+import { ConfigService } from 'src/config/config.service';
+import { MailerService } from '@nest-modules/mailer';
 
 @Injectable()
 export class VoucherService {
-  private voucher: Voucher = { id: '' };
-
+  constructor(private readonly mailerService: MailerService) {}
   // getVoucherById(id: string): Voucher {
   //   return Object.entries(this.voucher).map(voucher => voucher.id === id);
   // }
 
-  createVoucher(createVoucherDto: CreateVoucherDto): Voucher {
+  createVoucher(createVoucherDto: CreateVoucherDto): any {
     const { email, param } = createVoucherDto;
-    this.voucher.id = '2000';
-    console.log(email);
-    console.log(param);
-
-    return this.voucher;
+    const voucher = 2000;
+    this.mailerService
+      .sendMail({
+        to: email,
+        subject: 'Mellins iStyle - Voucher',
+        template: 'email',
+        context: {
+          voucher,
+        },
+      })
+      .then(() => console.log('email sent'))
+      .catch(error => {
+        console.error('Error sending email: ', error.stack);
+      });
   }
 }

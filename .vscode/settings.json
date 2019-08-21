@@ -1,3 +1,18 @@
 {
-  "docker.defaultRegistryPath": "asjas"
+  "docker.defaultRegistryPath": "asjas",
+  "peacock.color": "#FF2C70",
+  "workbench.colorCustomizations": {
+    "activityBar.background": "#FF2C70",
+    "activityBar.foreground": "#fff",
+    "activityBar.inactiveForeground": "#e7e7e7",
+    "activityBarBadge.background": "#53ff00",
+    "activityBarBadge.foreground": "#15202b",
+    "titleBar.activeBackground": "#ff2c70",
+    "titleBar.inactiveBackground": "#ff2c7099",
+    "titleBar.activeForeground": "#e7e7e7",
+    "titleBar.inactiveForeground": "#e7e7e799",
+    "statusBar.background": "#FF2C70",
+    "statusBarItem.hoverBackground": "#ff5f93",
+    "statusBar.foreground": "#e7e7e7"
+  }
 }

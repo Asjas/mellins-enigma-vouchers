@@ -22,7 +22,9 @@ export class VoucherController {
 
   @Post()
   @UsePipes(ValidationPipe)
-  createVoucher(@Body() createVoucherDto: CreateVoucherDto): Voucher {
+  async createVoucher(
+    @Body() createVoucherDto: CreateVoucherDto,
+  ): Promise<any> {
     return this.voucherService.createVoucher(createVoucherDto);
   }
 }
