@@ -2,7 +2,6 @@ import { Injectable } from '@nestjs/common';
 import { MailerService } from '@nest-modules/mailer';
 import { Voucher } from './interfaces/voucher.interface';
 import { CreateVoucherDto } from './dto/create-voucher.dto';
-import { ConfigService } from '../config/config.service';
 import { EnigmaService } from '../enigma/enigma.service';
 
 @Injectable()

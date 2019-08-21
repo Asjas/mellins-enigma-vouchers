@@ -12,6 +12,7 @@ import { ConfigService } from '../config/config.service';
       }),
       inject: [ConfigService],
     }),
+    ConfigModule,
   ],
   providers: [EnigmaService],
   exports: [EnigmaService],
