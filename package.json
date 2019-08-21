@@ -11,7 +11,9 @@
     "start:dev": "tsc-watch -p tsconfig.build.json --onSuccess \"node dist/main.js\"",
     "start:debug": "tsc-watch -p tsconfig.build.json --onSuccess \"node --inspect-brk dist/main.js\"",
     "start:prod": "node dist/main.js",
-    "lint": "tslint -p tsconfig.json -c tslint.json",
+    "prestart": "yarn build",
+    "lint": "eslint --ext .js,.ts ./src",
+    "prettier": "prettier --write 'src/**/*.ts'",
     "test": "jest",
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
@@ -34,13 +36,20 @@
   "devDependencies": {
     "@nestjs/testing": "^6.5.3",
     "@types/dotenv": "^6.1.1",
-    "@types/express": "4.17.1",
     "@types/hapi__joi": "^15.0.3",
     "@types/jest": "24.0.18",
     "@types/node": "12.7.2",
     "@types/supertest": "2.0.8",
+    "@typescript-eslint/eslint-plugin": "^2.0.0",
+    "@typescript-eslint/parser": "^2.0.0",
+    "eslint": "^6.2.1",
+    "eslint-config-airbnb-base": "^14.0.0",
+    "eslint-plugin-import": "^2.18.2",
+    "eslint-plugin-jest": "^22.15.2",
+    "husky": "^3.0.4",
     "jest": "24.9.0",
-    "prettier": "1.18.2",
+    "lint-staged": "^9.2.3",
+    "prettier": "^1.18.2",
     "supertest": "4.0.2",
     "ts-jest": "24.0.2",
     "ts-node": "8.3.0",
@@ -48,6 +57,18 @@
     "tsconfig-paths": "3.8.0",
     "tslint": "5.19.0",
     "typescript": "3.5.3"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged",
+      "pre-push": "npm-run-all lint test"
+    }
+  },
+  "lint-staged": {
+    "*.{js,ts,json}": [
+      "prettier --write 'src/**/*.ts'",
+      "git add"
+    ]
   },
   "jest": {
     "moduleFileExtensions": [
