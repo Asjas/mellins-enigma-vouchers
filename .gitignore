@@ -60,8 +60,5 @@ typings/
 # next.js build output
 .next
 
-# typescript build folder
-build
-
-# winston logs folder
-logs
+# Nest.js build folder
+dist

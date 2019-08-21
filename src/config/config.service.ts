@@ -32,10 +32,7 @@ export class ConfigService {
       MAIL_PASS: Joi.string().required(),
     });
 
-    const { error, value: validatedEnvConfig } = Joi.validate(
-      envConfig,
-      envVarsSchema,
-    );
+    const { error, value: validatedEnvConfig } = Joi.validate(envConfig, envVarsSchema);
 
     if (error) {
       throw new Error(`Config validation error: ${error.message}`);

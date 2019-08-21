@@ -18,12 +18,10 @@ export class VoucherService {
   // });
 
   async createVoucher(createVoucherDto: CreateVoucherDto): Promise<void> {
-    await this.enigmaService
-      .createEnigmaVoucher(createVoucherDto)
-      .subscribe(response => {
-        console.log(response);
-        // this.voucher = response.voucher;
-      });
+    await this.enigmaService.createEnigmaVoucher(createVoucherDto).subscribe(response => {
+      console.log(response);
+      // this.voucher = response.voucher;
+    });
     // await this.mailerService
     //   .sendMail({
     //     to: email,

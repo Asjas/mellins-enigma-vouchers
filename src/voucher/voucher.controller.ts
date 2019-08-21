@@ -1,12 +1,4 @@
-import {
-  Controller,
-  Body,
-  Get,
-  Post,
-  Param,
-  UsePipes,
-  ValidationPipe,
-} from '@nestjs/common';
+import { Controller, Body, Get, Post, Param, UsePipes, ValidationPipe } from '@nestjs/common';
 import { VoucherService } from './voucher.service';
 import { Voucher } from './interfaces/voucher.interface';
 import { CreateVoucherDto } from './dto/create-voucher.dto';
@@ -22,9 +14,7 @@ export class VoucherController {
 
   @Post()
   @UsePipes(ValidationPipe)
-  async createVoucher(
-    @Body() createVoucherDto: CreateVoucherDto,
-  ): Promise<any> {
+  async createVoucher(@Body() createVoucherDto: CreateVoucherDto): Promise<any> {
     return this.voucherService.createVoucher(createVoucherDto);
   }
 }
