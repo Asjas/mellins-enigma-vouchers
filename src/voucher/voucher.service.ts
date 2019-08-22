@@ -1,38 +1,36 @@
-import { Injectable } from '@nestjs/common';
-import { MailerService } from '@nest-modules/mailer';
+import { Injectable, Body } from '@nestjs/common';
 import { Voucher } from './interfaces/voucher.interface';
 import { CreateVoucherDto } from './dto/create-voucher.dto';
 import { EnigmaService } from '../enigma/enigma.service';
+import { MailerService } from '@nest-modules/mailer';
 
 @Injectable()
 export class VoucherService {
-  constructor(private readonly enigmaService: EnigmaService) {}
-  private voucher;
-  // getVoucherById(id: string): Voucher {
-  //   return Object.entries(this.voucher).map(voucher => voucher.id === id);
-  // }
+  constructor(
+    private readonly mailerService: MailerService,
+    private readonly enigmaService: EnigmaService,
+  ) {}
+  private email: string;
 
-  // this.enigmaService.getTenantDetail().subscribe(response => {
-  // console.log(response);
-  // });
-
-  async createVoucher(createVoucherDto: CreateVoucherDto): Promise<void> {
+  async createVoucher(@Body() createVoucherDto: CreateVoucherDto): Promise<void> {
     await this.enigmaService.createEnigmaVoucher(createVoucherDto).subscribe(response => {
       console.log(response);
+      this.email = createVoucherDto.email;
       // this.voucher = response.voucher;
     });
-    // await this.mailerService
-    //   .sendMail({
-    //     to: email,
-    //     subject: 'Mellins iStyle - Voucher',
-    //     template: 'email',
-    //     context: {
-    //       this.voucher,
-    //     },
-    //   })
-    //   .then(() => console.log('email sent'))
-    //   .catch(error => {
-    //     console.error('Error sending email: ', error.stack);
-    //   });
+
+    await this.mailerService
+      .sendMail({
+        to: this.email,
+        subject: 'Mellins iStyle - Voucher',
+        template: 'email',
+        // context: {
+        //   this.voucher,
+        // },
+      })
+      .then(() => console.log('email sent'))
+      .catch(error => {
+        console.error('Error sending email: ', error.stack);
+      });
   }
 }
