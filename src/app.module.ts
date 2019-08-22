@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common';
 import { HandlebarsAdapter, MailerModule } from '@nest-modules/mailer';
+import { TypeOrmModule } from '@nestjs/typeorm';
 import { VoucherModule } from './voucher/voucher.module';
 import { ConfigModule } from './config/config.module';
 import { ConfigService } from './config/config.service';
@@ -34,6 +35,21 @@ import { ConfigService } from './config/config.service';
             strict: false,
           },
         },
+      }),
+      inject: [ConfigService],
+    }),
+    TypeOrmModule.forRootAsync({
+      imports: [ConfigModule],
+      name: 'connection1',
+      useFactory: async (config: ConfigService) => ({
+        type: 'mysql',
+        host: config.MYSQL_HOST,
+        port: config.MYSQL_PORT,
+        username: config.MYSQL_USERNAME,
+        password: config.MYSQL_PASSWORD,
+        database: config.MYSQL_DATABASE,
+        entities: [__dirname + '/**/*.entity{.ts,.js}'],
+        synchronize: true,
       }),
       inject: [ConfigService],
     }),
