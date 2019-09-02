@@ -1,9 +1,10 @@
 import { Module } from '@nestjs/common';
 import { HandlebarsAdapter, MailerModule } from '@nest-modules/mailer';
-import { TypeOrmModule } from '@nestjs/typeorm';
+import { TypeOrmModule, TypeOrmModuleOptions } from '@nestjs/typeorm';
 import { VoucherModule } from './voucher/voucher.module';
 import { ConfigModule } from './config/config.module';
 import { ConfigService } from './config/config.service';
+import { Connection } from 'typeorm';
 
 @Module({
   imports: [
@@ -40,9 +41,8 @@ import { ConfigService } from './config/config.service';
     }),
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
-      name: 'connection1',
       useFactory: async (config: ConfigService) => ({
-        type: 'mysql',
+        type: 'mysql' as 'mysql',
         host: config.MYSQL_HOST,
         port: config.MYSQL_PORT,
         username: config.MYSQL_USERNAME,
