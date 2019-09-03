@@ -1,6 +1,6 @@
 import { Injectable, HttpService } from '@nestjs/common';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map, catchError } from 'rxjs/operators';
 import { AxiosResponse } from 'axios';
 import { CreateVoucherDto } from '../voucher/dto/create-voucher.dto';
 import { ConfigService } from '../config/config.service';
@@ -24,7 +24,7 @@ export class EnigmaService {
       .pipe(map(response => response.data));
   }
 
-  createEnigmaVoucher(createVoucherDto: CreateVoucherDto): Observable<AxiosResponse<any>> {
+  createEnigmaVoucher$(createVoucherDto: CreateVoucherDto): Observable<AxiosResponse<any>> {
     const { email, param } = createVoucherDto;
 
     return this.http

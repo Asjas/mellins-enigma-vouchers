@@ -10,6 +10,11 @@ async function bootstrap(): Promise<void> {
   const app = await NestFactory.create<NestFastifyApplication>(
     AppModule,
     new FastifyAdapter({ logger: true }),
+    {
+      cors: {
+        origin: 'http://mellins.co.za',
+      },
+    },
   );
 
   await app.listen(configService.PORT, '0.0.0.0');
