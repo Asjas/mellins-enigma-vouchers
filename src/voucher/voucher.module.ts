@@ -1,12 +1,12 @@
 import { Module } from '@nestjs/common';
+import { TypeOrmModule } from '@nestjs/typeorm';
 import { VoucherService } from './voucher.service';
 import { VoucherController } from './voucher.controller';
+import { VoucherRepository } from './voucher.repository';
 import { EnigmaModule } from '../enigma/enigma.module';
-import { TypeOrmModule } from '@nestjs/typeorm';
-import { Voucher } from './voucher.entity';
 
 @Module({
-  imports: [EnigmaModule, TypeOrmModule.forFeature([Voucher])],
+  imports: [EnigmaModule, TypeOrmModule.forFeature([VoucherRepository])],
   providers: [VoucherService],
   controllers: [VoucherController],
 })

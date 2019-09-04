@@ -1,6 +1,5 @@
 import { Injectable, HttpService } from '@nestjs/common';
-import { Observable } from 'rxjs';
-import { map, catchError } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 import { AxiosResponse } from 'axios';
 import { CreateVoucherDto } from '../voucher/dto/create-voucher.dto';
 import { ConfigService } from '../config/config.service';
@@ -9,29 +8,38 @@ import { ConfigService } from '../config/config.service';
 export class EnigmaService {
   constructor(private readonly http: HttpService, private readonly config: ConfigService) {}
 
-  private readonly auth = Buffer.from(
-    `${this.config.ENIGMA_USERNAME}:${this.config.ENIGMA_PASSWORD}`,
-  ).toString('base64');
-  private readonly bearer = `Basic ${this.auth}`;
-  private readonly tenant = 'mellins';
   private readonly definitionId = '5c162225995900346de27ba0';
 
-  getTenantDetail$(): Observable<AxiosResponse<any>> {
+  async getTenantDetail(): Promise<AxiosResponse<any>> {
     return this.http
-      .get(`${this.tenant}/detail`, {
-        headers: { Authorization: this.bearer },
-      })
-      .pipe(map(response => response.data));
+      .get(`mellins/detail`)
+      .pipe(map(response => response.data))
+      .toPromise();
   }
 
-  createEnigmaVoucher$(createVoucherDto: CreateVoucherDto): Observable<AxiosResponse<any>> {
+  async createEnigmaVoucher(createVoucherDto: CreateVoucherDto): Promise<AxiosResponse<any>> {
     const { email, param } = createVoucherDto;
 
     return this.http
-      .post(`${this.tenant}/definitions/${this.definitionId}/vouchers`, {
-        headers: { Authorization: this.bearer },
+      .post(`/mellins/definitions/${this.definitionId}/vouchers`, {
+        externalReferenceCode: 'asjas@outlook.com',
+        definition: {
+          voucherType: {
+            valueAmount: 120,
+          },
+        },
+      })
+      .pipe(map(response => response.data))
+      .toPromise();
+  }
+
+  async createEnigmaVoucher2(createVoucherDto: CreateVoucherDto): Promise<AxiosResponse<any>> {
+    const { email, param } = createVoucherDto;
+
+    return this.http
+      .post('/mellins/definitions/5c162225995900346de27ba0/vouchers', {
         data: {
-          externalReferenceCode: email,
+          externalReferenceCode: 'asjas@outlook.com',
           definition: {
             voucherType: {
               valueAmount: 120,
@@ -39,6 +47,7 @@ export class EnigmaService {
           },
         },
       })
-      .pipe(map(response => response.data));
+      .pipe(map(response => response.data))
+      .toPromise();
   }
 }

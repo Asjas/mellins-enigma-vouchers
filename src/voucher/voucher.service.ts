@@ -1,55 +1,61 @@
 import { Injectable, Body, Res } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
 import { MailerService } from '@nest-modules/mailer';
 import { CreateVoucherDto } from './dto/create-voucher.dto';
 import { EnigmaService } from '../enigma/enigma.service';
-import { Voucher } from './voucher.entity';
 import { VoucherRepository } from './voucher.repository';
+import { EnigmaDto } from 'src/enigma/dto/enigma.dto';
 
 @Injectable()
 export class VoucherService {
   constructor(
-    @InjectRepository(Voucher)
     private readonly voucherRepository: VoucherRepository,
-    private readonly mailerService: MailerService,
     private readonly enigmaService: EnigmaService,
   ) {}
-  private email: string;
 
-  async getVoucherByEmail(email: string) {
-    return this.voucherRepository.findOne({ email });
-  }
+  async createVoucher(
+    @Body() createVoucherDto: CreateVoucherDto,
+  ): Promise<{ code: number; result: string }> {
+    const foundVoucher = await this.voucherRepository.getVoucherByEmail(createVoucherDto);
 
-  async createVoucher(@Body() createVoucherDto: CreateVoucherDto): Promise<any> {
-    this.email = createVoucherDto.email;
-    const foundVoucher = await this.getVoucherByEmail(this.email);
-    console.log('found voucher', foundVoucher);
+    // If a voucher has been found, return a message and stop
+    if (foundVoucher) {
+      return {
+        code: 200,
+        result:
+          'Voucher for this user has already been created and emailed. Please check your spam/junk folder.',
+      };
+    }
 
-    const voucher = this.enigmaService.createEnigmaVoucher$(createVoucherDto).subscribe(
-      response => {
+    return this.enigmaService
+      .createEnigmaVoucher(createVoucherDto)
+      .then(response => {
         console.log('response', response);
-        return response;
-        // this.voucher = response.voucher;
-      },
-      err => {
-        return err;
-      },
-    );
 
-    return voucher;
+        const enigmaVoucher: EnigmaDto = {
+          issueDate: Date.now().toString(),
+          voucherCode: '2000',
+          voucherType: 'EYE_TEST',
+          voucherBatchId: '2001',
+        };
 
-    // await this.mailerService
-    //   .sendMail({
-    //     to: this.email,
-    //     subject: 'Mellins iStyle - Voucher',
-    //     template: 'email',
-    //     // context: {
-    //     //   this.voucher,
-    //     // },
-    //   })
-    //   .then(() => console.log('email sent'))
-    //   .catch(error => {
-    //     console.error('Error sending email: ', error.stack);
-    //   });
+        const result = this.voucherRepository.createVoucher(createVoucherDto, enigmaVoucher);
+        console.log('result', result);
+        return {
+          code: 201,
+          result: 'Voucher has been created and emailed.',
+        };
+      })
+      .catch(err => {
+        const voucherUnavailableRegex = /Not enough predefined voucher codes available/g;
+        const { detail } = err.response.data;
+
+        if (voucherUnavailableRegex.test(detail)) {
+          return { code: 400, result: 'No more vouchers are available.' };
+        }
+
+        if (Number(err.response.status >= 400)) {
+          return { code: 400, result: 'Voucher was not created. Please try again.' };
+        }
+      });
   }
 }

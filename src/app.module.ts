@@ -1,10 +1,9 @@
 import { Module } from '@nestjs/common';
 import { HandlebarsAdapter, MailerModule } from '@nest-modules/mailer';
-import { TypeOrmModule, TypeOrmModuleOptions } from '@nestjs/typeorm';
+import { TypeOrmModule } from '@nestjs/typeorm';
 import { VoucherModule } from './voucher/voucher.module';
 import { ConfigModule } from './config/config.module';
 import { ConfigService } from './config/config.service';
-import { Connection } from 'typeorm';
 
 @Module({
   imports: [

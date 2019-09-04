@@ -9,6 +9,7 @@ import { ConfigService } from '../config/config.service';
       imports: [ConfigModule],
       useFactory: async (config: ConfigService) => ({
         baseURL: config.ENIGMA_URL,
+        headers: { Authorization: 'Basic ZGF3aWRwQHBpZW5hYXJwYXJ0bmVycy5jby56YTpFbmlnbWFAMDA3' },
       }),
       inject: [ConfigService],
     }),
