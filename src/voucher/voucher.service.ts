@@ -1,4 +1,4 @@
-import { Injectable, Body, Res } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { MailerService } from '@nest-modules/mailer';
 import { CreateVoucherDto } from './dto/create-voucher.dto';
 import { EnigmaService } from '../enigma/enigma.service';
@@ -34,7 +34,7 @@ export class VoucherService {
   }
 
   async createVoucher(
-    @Body() createVoucherDto: CreateVoucherDto,
+    createVoucherDto: CreateVoucherDto,
   ): Promise<{ code: number; result: string }> {
     const date = new Date();
     const enigmaVoucher: EnigmaDto = {
