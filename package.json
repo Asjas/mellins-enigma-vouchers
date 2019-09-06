@@ -64,13 +64,15 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "lint-staged",
-      "pre-push": "npm-run-all lint test"
+      "pre-commit": "lint-staged"
     }
   },
   "lint-staged": {
-    "*.{js,ts,json}": [
-      "prettier --write 'src/**/*.ts'",
+    "*.+(js|ts)": [
+      "eslint"
+    ],
+    "*.+(js|jsx|json|yml|yaml|css|less|scss|ts|tsx|md|mdx|graphql)": [
+      "prettier --write",
       "git add"
     ]
   },
