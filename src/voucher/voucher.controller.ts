@@ -16,10 +16,6 @@ export class VoucherController {
   async createVoucher(@Body() createVoucherDto: CreateVoucherDto, @Res() res): Promise<any> {
     const { code, result } = await this.voucherService.createVoucher(createVoucherDto);
     console.log('route', result);
-    if (code === 400) {
-      res.status(code).send(result);
-      return;
-    }
 
     res.status(code).send(result);
   }
