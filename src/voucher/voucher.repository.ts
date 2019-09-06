@@ -1,5 +1,4 @@
 import { EntityRepository, Repository } from 'typeorm';
-import { MailerService } from '@nest-modules/mailer';
 import { CreateVoucherDto } from './dto/create-voucher.dto';
 import { EnigmaDto } from '../enigma/dto/enigma.dto';
 import { User } from './user.entity';
@@ -7,32 +6,6 @@ import { EnigmaVoucher } from '../enigma/enigma.entity';
 
 @EntityRepository(User)
 export class VoucherRepository extends Repository<User> {
-  constructor(private readonly mailerService: MailerService) {
-    super();
-  }
-
-  async sendEmail(createVoucherDto: CreateVoucherDto, enigmaVoucher: EnigmaDto): Promise<string> {
-    const { email } = createVoucherDto;
-    const { voucherCode } = enigmaVoucher;
-
-    return this.mailerService
-      .sendMail({
-        to: email,
-        subject: 'Mellins iStyle - Voucher',
-        template: 'email',
-        context: {
-          voucherCode,
-        },
-      })
-      .then(() => {
-        return 'Email sent.';
-      })
-      .catch(error => {
-        console.error(error);
-        return 'Error sending email.';
-      });
-  }
-
   async getVoucherByEmail(createVoucherDto: CreateVoucherDto): Promise<User> {
     const { email } = createVoucherDto;
     const result = await this.findOne({ where: { email }, relations: ['enigmaVouchers'] });
@@ -40,10 +13,7 @@ export class VoucherRepository extends Repository<User> {
     return result;
   }
 
-  async createVoucher(
-    createVoucherDto: CreateVoucherDto,
-    enigmaVoucher: EnigmaDto,
-  ): Promise<string> {
+  async createVoucher(createVoucherDto: CreateVoucherDto, enigmaVoucher: EnigmaDto): Promise<User> {
     const { email } = createVoucherDto;
     const { issueDate, voucherCode, voucherType, voucherBatchId } = enigmaVoucher;
 
@@ -66,8 +36,8 @@ export class VoucherRepository extends Repository<User> {
     await user.save();
 
     // Send email
-    const result = await this.sendEmail(createVoucherDto, enigmaVoucher);
+    // const result = await this.sendEmail(createVoucherDto, enigmaVoucher);
 
-    return result;
+    return user;
   }
 }

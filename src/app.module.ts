@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { HandlebarsAdapter, MailerModule } from '@nest-modules/mailer';
+import { MailerModule } from '@nest-modules/mailer';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { VoucherModule } from './voucher/voucher.module';
 import { ConfigModule } from './config/config.module';
@@ -27,13 +27,7 @@ import { ConfigService } from './config/config.service';
         },
         defaults: {
           from: '"Mellins iStyle" <vouchers@mellins.co.za>',
-        },
-        template: {
-          dir: __dirname + '/templates/',
-          adapter: new HandlebarsAdapter(),
-          options: {
-            strict: false,
-          },
+          subject: 'Mellins iStyle - Voucher',
         },
       }),
       inject: [ConfigService],
