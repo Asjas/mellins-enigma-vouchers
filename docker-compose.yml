@@ -1,11 +1,87 @@
-version: '3.7'
+version: "3.7"
 
 services:
-  example-service:
-    build: .
-    volumes:
-      - .:/app
-      - /app/node_modules
+  server:
+    image: asjas/voucher_server:latest
+    depends_on:
+      - voucher_db
+    deploy:
+      resources:
+        reservations:
+          cpus: "0.4"
+          memory: 1800M
+      labels:
+        - traefik.frontend.rule=Host:vouchers-api.mellins.co.za
+        - traefik.enable=true
+        - traefik.protocol=https
+        - traefik.backend=server
+        - traefik.port=3000
+      restart_policy:
+        condition: on-failure
+        delay: 10s
+        max_attempts: 3
+        window: 120s
     ports:
       - 3000:3000
-      - 9229:9229
+    networks:
+      - proxy
+      - network
+
+  traefik:
+    image: traefik:v2.0
+    networks:
+      - web
+    deploy:
+      replicas: 1
+      resources:
+        limits:
+          cpus: "0.4"
+          memory: 1000M
+      restart_policy:
+        condition: on-failure
+        delay: 10s
+        max_attempts: 3
+        window: 120s
+      labels:
+        - traefik.frontend.rule=Host:traefik.mellins.co.za
+        - traefik.enable=true
+        - traefik.protocol=https
+        - traefik.backend=traefik
+        - traefik.port=8080
+    ports:
+      - "443:443"
+      - "8080:8080"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /traefik/traefik.toml:/traefik.toml
+      - /traefik/certs/:/certs/
+      - /traefik/acme.json:/acme.json
+
+  db:
+    image: mariadb:10.4.7
+    environment:
+      - MYSQL_ROOT_PASSWORD=T610g1nr2
+      - MYSQL_DATABASE=enigma
+      - MYSQL_USER=vouchers
+      - MYSQL_PASSWORD=abz8rx9f
+    deploy:
+      resources:
+        reservations:
+          cpus: "0.4"
+          memory: 800M
+      restart_policy:
+        condition: on-failure
+        delay: 10s
+        max_attempts: 3
+        window: 120s
+    volumes:
+      - voucher-data:/var/lib/mysql
+    networks:
+      - network
+
+volumes:
+  voucher-data:
+
+networks:
+  network:
+  proxy:

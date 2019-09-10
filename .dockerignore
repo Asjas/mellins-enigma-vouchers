@@ -6,7 +6,6 @@ logs
 Dockerfile
 docker-compose.yml
 .dockerignore
-.env*
 .eslint*
 .git
 .gitignore
