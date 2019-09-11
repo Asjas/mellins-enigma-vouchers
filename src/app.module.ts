@@ -4,9 +4,11 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { VoucherModule } from './voucher/voucher.module';
 import { ConfigModule } from './config/config.module';
 import { ConfigService } from './config/config.service';
+import { HealthcheckModule } from './healthcheck/healthcheck.module';
 
 @Module({
   imports: [
+    HealthcheckModule,
     VoucherModule,
     ConfigModule,
     MailerModule.forRootAsync({
