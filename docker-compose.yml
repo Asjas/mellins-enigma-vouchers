@@ -8,13 +8,19 @@ services:
       voucher_db:
         condition: service_healthy
     deploy:
+      update_config:
+        delay: 5s
+        failure_action: rollback
+        max_failure_ratio: .5
+        monitor: 10s
+        parallelism: 1
       resources:
         limits:
-          cpus: '0.40'
-          memory: 1200M
+          cpus: '0.60'
+          memory: 1500M
         reservations:
-          cpus: '0.15'
-          memory: 500M
+          cpus: '0.25'
+          memory: 800M
       labels:
         - traefik.frontend.rule=Host:vouchers-api.mellins.co.za
         - traefik.enable=true
@@ -36,18 +42,24 @@ services:
       - 3000:3000
     networks:
       - proxy
-      - network
+      - db
 
   traefik:
     image: traefik:v2.0
-    networks:
-      - web
     deploy:
-      replicas: 1
+      update_config:
+        delay: 5s
+        failure_action: rollback
+        max_failure_ratio: .5
+        monitor: 10s
+        parallelism: 1
       resources:
         limits:
-          cpus: '0.4'
+          cpus: '0.60'
           memory: 1000M
+        reservations:
+          cpus: '0.25'
+          memory: 600M
       restart_policy:
         condition: on-failure
         delay: 10s
@@ -67,6 +79,8 @@ services:
       - /traefik/traefik.toml:/traefik.toml
       - /traefik/certs/:/certs/
       - /traefik/acme.json:/acme.json
+    networks:
+      - proxy
 
   db:
     image: mariadb:10.4.7
@@ -76,10 +90,19 @@ services:
       - MYSQL_USER=vouchers
       - MYSQL_PASSWORD=abz8rx9f
     deploy:
+      update_config:
+        delay: 5s
+        failure_action: rollback
+        max_failure_ratio: .5
+        monitor: 10s
+        parallelism: 1
       resources:
+        limits:
+          cpus: '0.50'
+          memory: 1000M
         reservations:
-          cpus: '0.4'
-          memory: 800M
+          cpus: '0.25'
+          memory: 600M
       restart_policy:
         condition: on-failure
         delay: 10s
@@ -88,11 +111,11 @@ services:
     volumes:
       - voucher-data:/var/lib/mysql
     networks:
-      - network
+      - db
 
 volumes:
   voucher-data:
 
 networks:
-  network:
+  db:
   proxy:

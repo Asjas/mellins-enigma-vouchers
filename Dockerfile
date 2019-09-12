@@ -2,6 +2,7 @@ FROM node:12.8.1
 
 EXPOSE 3000
 
+# Create work environment and set up app
 RUN mkdir /app && chown -R node:node /app
 WORKDIR /app
 USER node
