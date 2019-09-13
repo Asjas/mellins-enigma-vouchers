@@ -66,9 +66,9 @@ services:
         max_attempts: 3
         window: 120s
       labels:
-        - traefik.frontend.rule=Host:traefik.mellins.co.za
+        - traefik.frontend.rule=PathPrefix:/traefik
         - traefik.enable=true
-        - traefik.protocol=https
+        - traefik.protocol=http
         - traefik.backend=traefik
         - traefik.port=8080
     ports:
@@ -111,6 +111,41 @@ services:
     volumes:
       - voucher-data:/var/lib/mysql
     networks:
+      - db
+
+  db_admin:
+    image: phpmyadmin/phpmyadmin:4.9
+    environment:
+      - PMA_HOST=db
+      - PMA_USER=vouchers
+      - PMA_PASSWORD=abz8rx9f
+    deploy:
+      update_config:
+        delay: 5s
+        failure_action: rollback
+        max_failure_ratio: .5
+        monitor: 10s
+        parallelism: 1
+      resources:
+        limits:
+          cpus: '0.20'
+          memory: 500M
+        reservations:
+          cpus: '0.15'
+          memory: 200M
+      restart_policy:
+        condition: on-failure
+        delay: 10s
+        max_attempts: 3
+        window: 120s
+      labels:
+        - traefik.frontend.rule=PathPrefix:/dbadmin
+        - traefik.enable=true
+        - traefik.protocol=http
+        - traefik.backend=db_admin
+        - traefik.port=8080
+    networks:
+      - proxy
       - db
 
 volumes:
