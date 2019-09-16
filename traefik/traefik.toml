@@ -1,18 +1,12 @@
 debug = true
 
 logLevel = "DEBUG"
-defaultEntryPoints = ["https", "http"]
+defaultEntryPoints = ["http"]
 
 [entryPoints]
   [entryPoints.http]
   address = ":80"
   compress = true
-#    [entryPoints.http.redirect]
-#    entryPoint = "https"
-  [entryPoints.https]
-  address = ":443"
-  compress = true
-    [entryPoints.https.tls]
 
 [retry]
 
@@ -29,13 +23,3 @@ exposedByDefault = false
 entrypoint = "traefik"
 dashboard = true
 debug = true
-
-[acme]
-email = "vouchers@mellins.co.za"
-storage = "acme.json"
-caServer = "https://acme-staging-v02.api.letsencrypt.org/directory"
-entryPoint = "https"
-onHostRule = true
-
-[[acme.domains]]
-  main = "vouchers-api.mellins.co.za"
