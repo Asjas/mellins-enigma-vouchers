@@ -1,12 +1,18 @@
 debug = true
 
 logLevel = "DEBUG"
-defaultEntryPoints = ["http"]
+defaultEntryPoints = ["https", "http"]
 
 [entryPoints]
   [entryPoints.http]
   address = ":80"
   compress = true
+#    [entryPoints.http.redirect]
+#    entryPoint = "https"
+  [entryPoints.https]
+  address = ":443"
+  compress = true
+    [entryPoints.https.tls]
 
 [retry]
 
@@ -16,10 +22,20 @@ watch = true
 domain = "mellins.co.za"
 swarmMode = true
 swarmModeRefreshSeconds = 15
-network = "vouchers_proxy"
+network = "enigma_proxy"
 exposedByDefault = false
 
 [api]
 entrypoint = "traefik"
 dashboard = true
 debug = true
+
+[acme]
+email = "vouchers@mellins.co.za"
+storage = "acme.json"
+caServer = "https://acme-staging-v02.api.letsencrypt.org/directory"
+entryPoint = "https"
+onHostRule = true
+
+[[acme.domains]]
+  main = "vouchers-api.mellins.co.za"
