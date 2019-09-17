@@ -15,11 +15,11 @@ services:
         parallelism: 1
       resources:
         limits:
-          cpus: '0.60'
-          memory: 1500M
+          cpus: '0.20'
+          memory: 200M
         reservations:
-          cpus: '0.25'
-          memory: 800M
+          cpus: '0.10'
+          memory: 100M
       labels:
         - traefik.frontend.rule=Host:vouchers-api.mellins.co.za
         - traefik.enable=true
@@ -38,7 +38,7 @@ services:
       - db
 
   traefik:
-    image: traefik:v2.0
+    image: traefik
     deploy:
       replicas: 1
       update_config:
@@ -49,11 +49,11 @@ services:
         parallelism: 1
       resources:
         limits:
-          cpus: '0.60'
-          memory: 1000M
+          cpus: '0.20'
+          memory: 200M
         reservations:
-          cpus: '0.25'
-          memory: 600M
+          cpus: '0.10'
+          memory: 100M
       restart_policy:
         condition: on-failure
         delay: 10s
@@ -93,11 +93,11 @@ services:
         parallelism: 1
       resources:
         limits:
-          cpus: '0.50'
-          memory: 1000M
+          cpus: '0.20'
+          memory: 200M
         reservations:
-          cpus: '0.25'
-          memory: 600M
+          cpus: '0.10'
+          memory: 100M
       restart_policy:
         condition: on-failure
         delay: 10s
@@ -125,10 +125,10 @@ services:
       resources:
         limits:
           cpus: '0.20'
-          memory: 500M
-        reservations:
-          cpus: '0.15'
           memory: 200M
+        reservations:
+          cpus: '0.10'
+          memory: 100M
       restart_policy:
         condition: on-failure
         delay: 10s
