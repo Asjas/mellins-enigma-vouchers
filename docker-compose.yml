@@ -2,7 +2,7 @@ version: '3.7'
 
 services:
   server:
-    image: asjas/voucher_server:v1.0.3
+    image: asjas/voucher_server:v1.0.4
     depends_on:
       - voucher_db
     deploy:
