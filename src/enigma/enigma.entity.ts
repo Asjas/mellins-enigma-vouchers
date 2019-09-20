@@ -10,10 +10,13 @@ export class EnigmaVoucher extends BaseEntity {
   issueDate: string;
 
   @Column('text')
+  voucherCode: string;
+
+  @Column('text')
   voucherType: string;
 
   @Column('text')
-  voucherCode: string;
+  voucherAmount: number;
 
   @Column('text')
   voucherBatchId: string;

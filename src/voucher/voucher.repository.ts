@@ -15,12 +15,13 @@ export class VoucherRepository extends Repository<User> {
 
   async createVoucher(createVoucherDto: CreateVoucherDto, enigmaVoucher: EnigmaDto): Promise<User> {
     const { email } = createVoucherDto;
-    const { issueDate, voucherCode, voucherType, voucherBatchId } = enigmaVoucher;
+    const { issueDate, voucherCode, voucherType, voucherAmount, voucherBatchId } = enigmaVoucher;
 
     const enigma = new EnigmaVoucher();
     enigma.issueDate = issueDate;
     enigma.voucherCode = voucherCode;
     enigma.voucherType = voucherType;
+    enigma.voucherAmount = voucherAmount;
     enigma.voucherBatchId = voucherBatchId;
     await enigma.save();
 

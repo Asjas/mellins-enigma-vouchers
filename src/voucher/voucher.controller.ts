@@ -6,11 +6,19 @@ import { CreateVoucherDto } from './dto/create-voucher.dto';
 export class VoucherController {
   constructor(private readonly voucherService: VoucherService) {}
 
-  @Post()
+  @Post('/fourwaysprecinct')
   @UsePipes(ValidationPipe)
-  async createVoucher(@Body() createVoucherDto: CreateVoucherDto, @Res() res): Promise<any> {
+  async createVoucherPrecinct(@Body() createVoucherDto: CreateVoucherDto, @Res() res): Promise<any> {
     const { code, result } = await this.voucherService.createVoucher(createVoucherDto);
 
     res.status(code).send(result);
   }
+
+  // @Post()
+  // @UsePipes(ValidationPipe)
+  // async createVoucher(@Body() createVoucherDto: CreateVoucherDto, @Res() res): Promise<any> {
+  //   const { code, result } = await this.voucherService.createVoucher(createVoucherDto);
+
+  //   res.status(code).send(result);
+  // }
 }

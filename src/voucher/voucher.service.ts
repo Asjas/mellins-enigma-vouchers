@@ -3,8 +3,8 @@ import { MailerService } from '@nest-modules/mailer';
 import { CreateVoucherDto } from './dto/create-voucher.dto';
 import { EnigmaService } from '../enigma/enigma.service';
 import { VoucherRepository } from './voucher.repository';
-import { EnigmaDto } from 'src/enigma/dto/enigma.dto';
-import { mjmlEmail } from '../templates/voucher-email';
+import { EnigmaDto } from '../enigma/dto/enigma.dto';
+import { mjmlEmail } from '../templates/fourwaysPrecinctLaunch';
 
 @Injectable()
 export class VoucherService {
@@ -24,65 +24,67 @@ export class VoucherService {
         to: email,
         html: parsedEmail.html,
       })
-      .then(() => {
-        console.log('Email sent.');
-      })
+      .then(() => {})
       .catch(error => {
         console.error(error);
         return 'Error sending email.';
       });
   }
 
-  async createVoucher(
-    createVoucherDto: CreateVoucherDto,
-  ): Promise<{ code: number; result: string }> {
+  async createVoucher(createVoucherDto: CreateVoucherDto): Promise<{ code: number; result: string }> {
     const date = new Date();
+
+    // replace with data from enigma api
     const enigmaVoucher: EnigmaDto = {
       issueDate: date.toISOString(),
-      voucherCode: 'D340DJFKCE344243',
-      voucherType: 'EYE_TEST',
-      voucherBatchId: '2001',
+      voucherCode: '',
+      voucherType: 'PRECINCT_PROMOTION',
+      voucherAmount: 2000,
+      voucherBatchId: '',
     };
 
-    const foundVoucher = await this.voucherRepository.getVoucherByEmail(createVoucherDto);
-    console.log('found voucher', foundVoucher);
+    const foundUser = await this.voucherRepository.getVoucherByEmail(createVoucherDto);
+    const matchedVoucherType =
+      foundUser && foundUser.enigmaVouchers.map(voucher => voucher.voucherType === enigmaVoucher.voucherType);
 
-    // If a voucher has been found, return a message and stop
-    if (foundVoucher) {
+    // If a previous matching voucher has been found, return a message and stop
+    if (matchedVoucherType) {
       return {
-        code: 200,
-        result:
-          "Voucher for this user has already been created and emailed. Please check your spam/junk folder if you haven't received it yet.",
+        code: 203,
+        result: 'A voucher for this email address has already been created and emailed.',
       };
     }
 
     const enigmaResult = await this.enigmaService
       .createEnigmaVoucher(createVoucherDto)
-      .then(response => {
-        console.log('response', response);
+      .then((response: any) => {
+        enigmaVoucher.voucherCode = response.voucherCode;
+        enigmaVoucher.voucherBatchId = response.voucherBatchId;
 
-        const result = this.voucherRepository.createVoucher(createVoucherDto, enigmaVoucher);
+        this.voucherRepository.createVoucher(createVoucherDto, enigmaVoucher);
 
-        console.log('result', result);
         return {
           code: 201,
-          result: 'Voucher has been created and emailed.',
+          result: 'Voucher has been sent to your email address.',
         };
       })
       .catch(err => {
-        const voucherUnavailableRegex = /Not enough predefined voucher codes available/g;
-        const { detail } = err.response.data;
+        if (err) {
+          const voucherUnavailableRegex = /Not enough predefined voucher codes available/g;
+          const { detail } = err.response.data;
 
-        if (voucherUnavailableRegex.test(detail)) {
-          return { code: 400, result: 'No more vouchers are available.' };
-        }
+          if (voucherUnavailableRegex.test(detail)) {
+            return { code: 203, result: 'No more vouchers are available.' };
+          }
 
-        if (Number(err.response.status >= 400)) {
-          return { code: 400, result: 'Voucher was not created. Please try again.' };
+          if (err.response.status >= 400) {
+            return { code: 400, result: 'Voucher was not created. Please try again.' };
+          }
         }
       });
 
     if (enigmaResult.code === 201) {
+      // If the voucher was created, send the email to the user
       await this.sendEmail(createVoucherDto, enigmaVoucher);
     }
 

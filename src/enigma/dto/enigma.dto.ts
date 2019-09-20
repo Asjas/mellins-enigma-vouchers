@@ -11,5 +11,8 @@ export class EnigmaDto {
   voucherType: string;
 
   @IsNotEmpty()
+  voucherAmount: number;
+
+  @IsNotEmpty()
   voucherBatchId: string;
 }
