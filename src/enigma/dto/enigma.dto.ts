@@ -10,8 +10,9 @@ export class EnigmaDto {
   @IsNotEmpty()
   voucherType: string;
 
-  @IsNotEmpty()
-  voucherAmount: number;
+  voucherAmount?: number;
+
+  voucherDiscount?: number;
 
   @IsNotEmpty()
   voucherBatchId: string;

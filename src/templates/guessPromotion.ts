@@ -1,6 +1,6 @@
 import mjml2html from 'mjml';
 
-export const fourwaysPrecinctLaunch: any = (voucher: string) => {
+export const guessPromotion: any = (voucher: string) => {
   return mjml2html(`<mjml>
   <mj-head>
     <mj-title>Mellins iStyle Voucher</mj-title>
@@ -17,52 +17,38 @@ export const fourwaysPrecinctLaunch: any = (voucher: string) => {
         <mj-text font-size="30px" align="center" padding="20px" font-family="Roboto" color="#ffffff" container-background-color="#445a6a">${voucher}</mj-text>
       </mj-column>
     </mj-section>
+
     <mj-section padding-bottom="10px">
       <mj-column>
-        <mj-text align="center" font-size="18px" line-height="34px">
-          <mj-text>Receive a <strong>FREE SECOND PAIR</strong> valued between<br /></mj-text>
-          <mj-text><strong>R 7000 and R 17000</strong><br /></mj-text>
-          <mj-text>if you test your eyes and buy new spectacles with ZEISS i.Scription lenses.</mj-text>
-        </mj-text>
-        <mj-text font-size="16px" line-height="24px">
-          <ul>
-            <li>Your free second pair includes the same lenses as your initial pair. Your lens choice will determine the value of the offering.
-            </li>
-            <li>The lenses can be tinted free of charge to create a pair of prescription sunglasses or sport sunglasses.
-            </li>
-            <li>You can choose any frame up to the value of R 2000 (excess for your own account)
-            </li>
-            Available 20 September 2019 – 31 December 2019
-          </ul>
-        </mj-text>
+        <mj-image src="http://mellins.co.za/wp-content/uploads/2019/09/91bf1f18-7664-40ec-adcc-0dd49508a228.jpg" width="300px"></mj-image>
+      </mj-column>
+      <mj-column width="300px">
+        <mj-text font-size="36px" font-weight="700" align="center" padding-top="30px">FREE PAIR OF GUESS SUNGLASSES<br /></mj-text>
+        <mj-text font-size="18px" align="center" padding-top="20px">when you buy a Guess frame with ZEISS lenses<br /></mj-text>
+        <mj-text font-size="16px" align="center" padding-top="260px" vertical-align="bottom">Available until 31 October 2019</mj-text>
       </mj-column>
     </mj-section>
+
     <mj-section padding-top="0">
       <mj-column>
         <mj-text font-size="14px" line-height="22px" color="#8a8a8a">
           <ul>
             Terms and Conditions
-            <li>This offer is subject to a purchase of an eye test, new prescription frame and ZEISS i.Scription lenses.
+            <li>This offer is only valid if a customer buys a new Guess frame and new ZEISS lenses.
             </li>
-            <li>The offer will not be available for the following lenses: ZEISS Stock lenses; ZEISS Conventional lenses; ZEISS EnergizeMe lenses; ZEISS Light lenses; Photofusion, AdaptiveSun and Polarized lenses.
+            <li>This offer is valid until 31 October 2019
             </li>
-            <li>The offer is only available at Mellins i.Style in Fourways Precinct.
+            <li>This offer cannot be combined with other offers
             </li>
-            <li>The value of the offer will vary based on the initial lens choice.
+            <li>Only one offer per customer
             </li>
-            <li>The frame for the free second pair will be limited to a value of R2000. If the cost of the second frame is less than R2000 – the balance will be forfeited. If the cost of the second frame is more than R2000, the balance will need to be paid
-              in by the customer.
-            </li>
-            <li>This offer may not be used in conjunction with any other offers.
-            </li>
-            <li>Only one offer per customer.
-            </li>
-            <li>This offer is valid for orders placed between 20 September 2019 – 31 December 2019.
+            <li>This offer refers to unscripted sunglasses. Sunglasses may be scripted at additional cost.
             </li>
           </ul>
         </mj-text>
       </mj-column>
     </mj-section>
+
     <mj-section background-color="#e7e7e7">
       <mj-column padding-left="50px" padding-bottom="15px">
         <mj-text font-size="18px" align="left" padding-bottom="5px" font-family="Roboto">Mellins iStyle</mj-text>
