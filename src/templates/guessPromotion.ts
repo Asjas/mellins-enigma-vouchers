@@ -23,9 +23,9 @@ export const guessPromotion: any = (voucher: string) => {
         <mj-image src="http://mellins.co.za/wp-content/uploads/2019/09/91bf1f18-7664-40ec-adcc-0dd49508a228.jpg" width="300px"></mj-image>
       </mj-column>
       <mj-column width="300px">
-        <mj-text font-size="36px" font-weight="700" align="center" padding-top="30px">FREE PAIR OF GUESS SUNGLASSES<br /></mj-text>
+        <mj-text font-size="36px" font-weight="700" align="center" padding-top="60px">FREE PAIR OF GUESS SUNGLASSES<br /></mj-text>
         <mj-text font-size="18px" align="center" padding-top="20px">when you buy a Guess frame with ZEISS lenses<br /></mj-text>
-        <mj-text font-size="16px" align="center" padding-top="260px" vertical-align="bottom">Available until 31 October 2019</mj-text>
+        <mj-text font-size="16px" align="center" padding-top="195px" vertical-align="bottom">Available until 31 October 2019</mj-text>
       </mj-column>
     </mj-section>
 
