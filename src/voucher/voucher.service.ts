@@ -71,7 +71,7 @@ export class VoucherService {
       foundUser && foundUser.enigmaVouchers.map(voucher => voucher.voucherType === enigmaVoucher.voucherType);
 
     // If a previous matching voucher has been found, return a message and stop
-    if (matchedVoucherType.includes(true)) {
+    if (matchedVoucherType && matchedVoucherType.includes(true)) {
       return {
         code: 203,
         result: 'A voucher for this email address has already been created and emailed.',
@@ -134,7 +134,7 @@ export class VoucherService {
       foundUser && foundUser.enigmaVouchers.map(voucher => voucher.voucherType === enigmaVoucher.voucherType);
 
     // If a previous matching voucher has been found, return a message and stop
-    if (matchedVoucherType.includes(true)) {
+    if (matchedVoucherType && matchedVoucherType.includes(true)) {
       return {
         code: 203,
         result: 'A voucher for this email address has already been created and emailed.',
