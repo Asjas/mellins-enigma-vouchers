@@ -67,9 +67,8 @@ export class VoucherService {
     };
 
     const foundUser = await this.voucherRepository.getVoucherByEmail(createVoucherDto);
-    const matchedVoucherType = foundUser.enigmaVouchers.map(
-      voucher => voucher.voucherType === enigmaVoucher.voucherType,
-    );
+    const matchedVoucherType =
+      foundUser && foundUser.enigmaVouchers.map(voucher => voucher.voucherType === enigmaVoucher.voucherType);
 
     // If a previous matching voucher has been found, return a message and stop
     if (matchedVoucherType.includes(true)) {
@@ -131,9 +130,8 @@ export class VoucherService {
     };
 
     const foundUser = await this.voucherRepository.getVoucherByEmail(createVoucherDto);
-    const matchedVoucherType = foundUser.enigmaVouchers.map(
-      voucher => voucher.voucherType === enigmaVoucher.voucherType,
-    );
+    const matchedVoucherType =
+      foundUser && foundUser.enigmaVouchers.map(voucher => voucher.voucherType === enigmaVoucher.voucherType);
 
     // If a previous matching voucher has been found, return a message and stop
     if (matchedVoucherType.includes(true)) {
