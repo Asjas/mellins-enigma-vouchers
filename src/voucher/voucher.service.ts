@@ -136,7 +136,7 @@ export class VoucherService {
     );
 
     // If a previous matching voucher has been found, return a message and stop
-    if (matchedVoucherType[0]) {
+    if (matchedVoucherType.includes(true)) {
       return {
         code: 203,
         result: 'A voucher for this email address has already been created and emailed.',
