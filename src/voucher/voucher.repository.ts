@@ -15,29 +15,29 @@ export class VoucherRepository extends Repository<User> {
 
   async createVoucher(createVoucherDto: CreateVoucherDto, enigmaVoucher: EnigmaDto): Promise<User> {
     const { email } = createVoucherDto;
-    const { issueDate, voucherCode, voucherType, voucherAmount, voucherBatchId } = enigmaVoucher;
+    const { issueDate, voucherCode, voucherType, voucherAmount, voucherDiscount, voucherBatchId } = enigmaVoucher;
 
     const enigma = new EnigmaVoucher();
     enigma.issueDate = issueDate;
     enigma.voucherCode = voucherCode;
     enigma.voucherType = voucherType;
-    enigma.voucherAmount = voucherAmount;
+    enigma.voucherAmount = voucherAmount || 0;
+    enigma.voucherDiscount = voucherDiscount || 0;
     enigma.voucherBatchId = voucherBatchId;
     await enigma.save();
 
     const userFound = await this.findOne({ where: { email }, relations: ['enigmaVouchers'] });
 
     if (userFound) {
-      console.log('userFound', userFound);
+      userFound.enigmaVouchers.push(enigma);
+      await userFound.save();
+      return userFound;
     }
 
     const user = new User();
     user.email = email;
     user.enigmaVouchers = [enigma];
     await user.save();
-
-    // Send email
-    // const result = await this.sendEmail(createVoucherDto, enigmaVoucher);
 
     return user;
   }

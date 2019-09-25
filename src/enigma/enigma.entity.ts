@@ -19,6 +19,9 @@ export class EnigmaVoucher extends BaseEntity {
   voucherAmount: number;
 
   @Column('text')
+  voucherDiscount: number;
+
+  @Column('text')
   voucherBatchId: string;
 
   @ManyToOne(type => User, voucher => voucher.enigmaVouchers)
