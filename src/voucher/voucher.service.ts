@@ -16,27 +16,44 @@ export class VoucherService {
     private readonly enigmaService: EnigmaService,
   ) {}
 
+  sendEmailFourways(createVoucherDto: CreateVoucherDto, enigmaVoucher: EnigmaDto) {
+    const { email } = createVoucherDto;
+    const { voucherCode } = enigmaVoucher;
+    const parsedEmail = fourwaysPrecinctLaunch(voucherCode);
+
+    return this.mailerService
+      .sendMail({
+        to: email,
+        html: parsedEmail.html,
+      })
+      .then(() => {})
+      .catch(error => {
+        console.error(error);
+        return 'Error sending email.';
+      });
+  }
+
+  sendEmailGuess(createVoucherDto: CreateVoucherDto, enigmaVoucher: EnigmaDto) {
+    const { email } = createVoucherDto;
+    const { voucherCode } = enigmaVoucher;
+    const parsedEmail = guessPromotion(voucherCode);
+
+    return this.mailerService
+      .sendMail({
+        to: email,
+        html: parsedEmail.html,
+      })
+      .then(() => {})
+      .catch(error => {
+        console.error(error);
+        return 'Error sending email.';
+      });
+  }
+
   async createEnigmaValueVoucher(
     createVoucherDto: CreateVoucherDto,
     voucher: VoucherDto,
   ): Promise<{ code: number; result: string }> {
-    function sendEmail(createVoucherDto: CreateVoucherDto, enigmaVoucher: EnigmaDto) {
-      const { email } = createVoucherDto;
-      const { voucherCode } = enigmaVoucher;
-      const parsedEmail = fourwaysPrecinctLaunch(voucherCode);
-
-      return this.mailerService
-        .sendMail({
-          to: email,
-          html: parsedEmail.html,
-        })
-        .then(() => {})
-        .catch(error => {
-          console.error(error);
-          return 'Error sending email.';
-        });
-    }
-
     const date = new Date();
     const { type, value } = voucher;
 
@@ -62,6 +79,7 @@ export class VoucherService {
       };
     }
 
+    // If there hasn't been a voucher created for this email account, then create and email it
     const enigmaResult = await this.enigmaService
       .createEnigmaValueVoucher(createVoucherDto, voucher)
       .then((response: any) => {
@@ -70,7 +88,8 @@ export class VoucherService {
 
         this.voucherRepository.createVoucher(createVoucherDto, enigmaVoucher);
 
-        sendEmail(createVoucherDto, enigmaVoucher);
+        this.sendEmailFourways(createVoucherDto, enigmaVoucher);
+
         return {
           code: 201,
           result: 'Voucher has been sent to your email address.',
@@ -78,6 +97,7 @@ export class VoucherService {
       })
       .catch(err => {
         if (err) {
+          console.log(err);
           const voucherUnavailableRegex = /Not enough predefined voucher codes available/g;
           const { detail } = err.response.data;
 
@@ -98,23 +118,6 @@ export class VoucherService {
     createVoucherDto: CreateVoucherDto,
     voucher: VoucherDto,
   ): Promise<{ code: number; result: string }> {
-    function sendEmail(createVoucherDto: CreateVoucherDto, enigmaVoucher: EnigmaDto) {
-      const { email } = createVoucherDto;
-      const { voucherCode } = enigmaVoucher;
-      const parsedEmail = guessPromotion(voucherCode);
-
-      return this.mailerService
-        .sendMail({
-          to: email,
-          html: parsedEmail.html,
-        })
-        .then(() => {})
-        .catch(error => {
-          console.error(error);
-          return 'Error sending email.';
-        });
-    }
-
     const date = new Date();
     const { type, value } = voucher;
 
@@ -140,6 +143,7 @@ export class VoucherService {
       };
     }
 
+    // If there hasn't been a voucher created for this email account, then create and email it
     const enigmaResult = await this.enigmaService
       .createEnigmaValueVoucher(createVoucherDto, voucher)
       .then((response: any) => {
@@ -148,7 +152,8 @@ export class VoucherService {
 
         this.voucherRepository.createVoucher(createVoucherDto, enigmaVoucher);
 
-        sendEmail(createVoucherDto, enigmaVoucher);
+        this.sendEmailGuess(createVoucherDto, enigmaVoucher);
+
         return {
           code: 201,
           result: 'Voucher has been sent to your email address.',
