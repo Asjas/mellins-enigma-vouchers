@@ -9,6 +9,7 @@ export class VoucherRepository extends Repository<User> {
   async getVoucherByEmail(createVoucherDto: CreateVoucherDto): Promise<User> {
     const { email } = createVoucherDto;
     const result = await this.findOne({ where: { email }, relations: ['enigmaVouchers'] });
+    console.log(result);
 
     return result;
   }
