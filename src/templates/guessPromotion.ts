@@ -1,7 +1,7 @@
 import mjml2html from 'mjml';
 
-export const guessPromotion: any = (voucher: string) => {
-  return mjml2html(`<mjml>
+export const guessPromotion: any = (voucher: string) =>
+  mjml2html(`<mjml>
   <mj-head>
     <mj-title>Mellins iStyle Voucher</mj-title>
     <mj-font name="Raleway" href="https://fonts.googleapis.com/css?family=Raleway" />
@@ -20,12 +20,12 @@ export const guessPromotion: any = (voucher: string) => {
 
     <mj-section padding-bottom="10px">
       <mj-column>
-        <mj-image src="http://mellins.co.za/wp-content/uploads/2019/09/91bf1f18-7664-40ec-adcc-0dd49508a228.jpg" width="300px"></mj-image>
+        <mj-image src="http://mellins.co.za/wp-content/uploads/2019/09/guess-promo-pic.jpeg" width="300px"></mj-image>
       </mj-column>
       <mj-column width="300px">
         <mj-text font-size="36px" font-weight="700" align="center" padding-top="60px">FREE PAIR OF GUESS SUNGLASSES<br /></mj-text>
         <mj-text font-size="18px" align="center" padding-top="20px">when you buy a Guess frame with ZEISS lenses<br /></mj-text>
-        <mj-text font-size="16px" align="center" padding-top="195px" vertical-align="bottom">Available until 31 October 2019</mj-text>
+        <mj-text font-size="16px" align="center" padding-top="190px" vertical-align="bottom">Available until 31 October 2019</mj-text>
       </mj-column>
     </mj-section>
 
@@ -66,4 +66,3 @@ export const guessPromotion: any = (voucher: string) => {
     </mj-section>
   </mj-body>
 </mjml>`);
-};
