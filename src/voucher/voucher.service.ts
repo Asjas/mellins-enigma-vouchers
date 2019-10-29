@@ -11,13 +11,12 @@ import { EnigmaService } from '../services/enigma/enigma.service';
 import { CreateVoucherDto } from './dto/create-voucher.dto';
 import { VoucherDto } from './dto/voucher.dto';
 import { EnigmaDto } from './dto/enigma.dto';
-import { MockEnigmaService } from '../services/mock/enigma-mock.service';
 
 @Injectable()
 export class VoucherService {
   constructor(
     private readonly voucherRepository: VoucherRepository,
-    private readonly enigmaService: MockEnigmaService,
+    private readonly enigmaService: EnigmaService,
     private readonly voucherMailerService: VoucherMailerService,
   ) {}
 
