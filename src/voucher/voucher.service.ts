@@ -1,68 +1,42 @@
 import { Injectable } from '@nestjs/common';
-import { MailerService } from '@nest-modules/mailer';
-import { EnigmaService } from '../enigma/enigma.service';
+
+// Repositories
 import { VoucherRepository } from './voucher.repository';
+
+// Services
+import { VoucherMailerService } from './services/mailer.service';
+import { EnigmaService } from '../services/enigma/enigma.service';
+
+// Dto
 import { CreateVoucherDto } from './dto/create-voucher.dto';
-import { EnigmaDto } from '../enigma/dto/enigma.dto';
-import { fourwaysPrecinctLaunch } from '../templates/fourwaysPrecinctLaunch';
 import { VoucherDto } from './dto/voucher.dto';
-import { guessPromotion } from '../templates/guessPromotion';
+import { EnigmaDto } from './dto/enigma.dto';
+import { MockEnigmaService } from '../services/mock/enigma-mock.service';
 
 @Injectable()
 export class VoucherService {
   constructor(
-    private readonly mailerService: MailerService,
     private readonly voucherRepository: VoucherRepository,
-    private readonly enigmaService: EnigmaService,
+    private readonly enigmaService: MockEnigmaService,
+    private readonly voucherMailerService: VoucherMailerService,
   ) {}
 
-  sendEmailFourways(createVoucherDto: CreateVoucherDto, enigmaVoucher: EnigmaDto) {
-    const { email } = createVoucherDto;
-    const { voucherCode } = enigmaVoucher;
-    const parsedEmail = fourwaysPrecinctLaunch(voucherCode);
-
-    return this.mailerService
-      .sendMail({
-        to: email,
-        html: parsedEmail.html,
-      })
-      .then(() => {})
-      .catch(error => {
-        console.error(error);
-        return 'Error sending email.';
-      });
-  }
-
-  sendEmailGuess(createVoucherDto: CreateVoucherDto, enigmaVoucher: EnigmaDto) {
-    const { email } = createVoucherDto;
-    const { voucherCode } = enigmaVoucher;
-    const parsedEmail = guessPromotion(voucherCode);
-
-    return this.mailerService
-      .sendMail({
-        to: email,
-        html: parsedEmail.html,
-      })
-      .then(() => {})
-      .catch(error => {
-        console.error(error);
-        return 'Error sending email.';
-      });
-  }
-
-  async createEnigmaValueVoucher(
-    createVoucherDto: CreateVoucherDto,
-    voucher: VoucherDto,
-  ): Promise<{ code: number; result: string }> {
+  async createVoucherPrecinct(createVoucherDto: CreateVoucherDto): Promise<{ code: number; result: string }> {
+    const voucherDto = {
+      type: 'PRECINCT_PROMOTION',
+      definitionId: '5d84b4dbbaaab1b6784fe62b',
+      value: 2000,
+    } as VoucherDto;
     const date = new Date();
-    const { type, value } = voucher;
+    let code: number;
+    let result: string;
 
     // replace with data from enigma api
     const enigmaVoucher: EnigmaDto = {
       issueDate: date.toISOString(),
       voucherCode: '',
-      voucherType: type,
-      voucherAmount: value,
+      voucherType: voucherDto.type,
+      voucherAmount: voucherDto.value,
       voucherBatchId: '',
     };
 
@@ -72,60 +46,67 @@ export class VoucherService {
 
     // If a previous matching voucher has been found, return a message and stop
     if (matchedVoucherType && matchedVoucherType.includes(true)) {
-      return {
-        code: 203,
-        result: 'A voucher for this email address has already been created and emailed.',
-      };
+      code = 203;
+      result = 'A voucher for this email address has already been created and emailed.';
+
+      return { code, result };
     }
 
     // If there hasn't been a voucher created for this email account, then create and email it
-    const enigmaResult = await this.enigmaService
-      .createEnigmaValueVoucher(createVoucherDto, voucher)
-      .then((response: any) => {
+    await this.enigmaService
+      .createEnigmaValueVoucher(createVoucherDto, voucherDto)
+      .then(async response => {
         enigmaVoucher.voucherCode = response.voucherCode;
         enigmaVoucher.voucherBatchId = response.voucherBatchId;
 
-        this.voucherRepository.createVoucher(createVoucherDto, enigmaVoucher);
+        await this.voucherRepository.createVoucher(createVoucherDto, enigmaVoucher);
 
-        this.sendEmailFourways(createVoucherDto, enigmaVoucher);
+        await this.voucherMailerService.sendEmailFourways(createVoucherDto, enigmaVoucher);
 
-        return {
-          code: 201,
-          result: 'Voucher has been sent to your email address.',
-        };
+        code = 201;
+        result = 'Voucher has been sent to your email address.';
       })
-      .catch(err => {
-        if (err) {
-          console.log(err);
+      .catch(error => {
+        if (error) {
           const voucherUnavailableRegex = /Not enough predefined voucher codes available/g;
-          const { detail } = err.response.data;
+          const { detail } = error.response.data;
 
           if (voucherUnavailableRegex.test(detail)) {
-            return { code: 203, result: 'No more vouchers are available.' };
+            code = 203;
+            result = 'No more vouchers are available.';
+            return;
           }
 
-          if (err.response.status >= 400) {
-            return { code: 400, result: 'Voucher was not created. Please try again.' };
+          if (error.response.status >= 400) {
+            code = 400;
+            result = 'Voucher was not created. Please try again.';
+            return;
           }
+
+          code = 500;
+          result = error;
         }
       });
 
-    return enigmaResult;
+    return { code, result };
   }
 
-  async createEnigmaDiscountVoucher(
-    createVoucherDto: CreateVoucherDto,
-    voucher: VoucherDto,
-  ): Promise<{ code: number; result: string }> {
+  async createVoucherGuess(createVoucherDto: CreateVoucherDto): Promise<{ code: number; result: string }> {
+    const voucherDto = {
+      type: 'GUESS_PROMOTION_SEP',
+      definitionId: '5d889652baaab1b67851fa61',
+      discount: 100,
+    } as VoucherDto;
     const date = new Date();
-    const { type, value } = voucher;
+    let code: number;
+    let result: string;
 
     // replace with data from enigma api
     const enigmaVoucher: EnigmaDto = {
       issueDate: date.toISOString(),
       voucherCode: '',
-      voucherType: type,
-      voucherDiscount: value,
+      voucherType: voucherDto.type,
+      voucherDiscount: voucherDto.value,
       voucherBatchId: '',
     };
 
@@ -135,43 +116,190 @@ export class VoucherService {
 
     // If a previous matching voucher has been found, return a message and stop
     if (matchedVoucherType && matchedVoucherType.includes(true)) {
-      return {
-        code: 203,
-        result: 'A voucher for this email address has already been created and emailed.',
-      };
+      code = 203;
+      result = 'A voucher for this email address has already been created and emailed.';
+
+      return { code, result };
     }
 
     // If there hasn't been a voucher created for this email account, then create and email it
-    const enigmaResult = await this.enigmaService
-      .createEnigmaValueVoucher(createVoucherDto, voucher)
-      .then((response: any) => {
+    await this.enigmaService
+      .createEnigmaValueVoucher(createVoucherDto, voucherDto)
+      .then(async response => {
         enigmaVoucher.voucherCode = response.voucherCode;
         enigmaVoucher.voucherBatchId = response.voucherBatchId;
 
-        this.voucherRepository.createVoucher(createVoucherDto, enigmaVoucher);
+        await this.voucherRepository.createVoucher(createVoucherDto, enigmaVoucher);
 
-        this.sendEmailGuess(createVoucherDto, enigmaVoucher);
+        await this.voucherMailerService.sendEmailGuess(createVoucherDto, enigmaVoucher);
 
-        return {
-          code: 201,
-          result: 'Voucher has been sent to your email address.',
-        };
+        code = 201;
+        result = 'Voucher has been sent to your email address.';
       })
-      .catch(err => {
-        if (err) {
+      .catch(error => {
+        if (error) {
           const voucherUnavailableRegex = /Not enough predefined voucher codes available/g;
-          const { detail } = err.response.data;
+          const { detail } = error.response.data;
 
           if (voucherUnavailableRegex.test(detail)) {
-            return { code: 203, result: 'No more vouchers are available.' };
+            code = 203;
+            result = 'No more vouchers are available.';
+            return;
           }
 
-          if (err.response.status >= 400) {
-            return { code: 400, result: 'Voucher was not created. Please try again.' };
+          if (error.response.status >= 400) {
+            code = 400;
+            result = 'Voucher was not created. Please try again.';
+            return;
           }
+
+          code = 500;
+          result = error;
         }
       });
 
-    return enigmaResult;
+    return { code, result };
+  }
+
+  async createSummerSalePromotion(createVoucherDto: CreateVoucherDto): Promise<{ code: number; result: string }> {
+    const voucherDto = {
+      type: 'SUMMER_SALE_PROMOTION',
+      definitionId: '5dadb9f4ebd1f31230e18299',
+      value: 45,
+    } as VoucherDto;
+    const date = new Date();
+    let code: number;
+    let result: string;
+
+    // replace with data from enigma api
+    const enigmaVoucher: EnigmaDto = {
+      issueDate: date.toISOString(),
+      voucherCode: '',
+      voucherType: voucherDto.type,
+      voucherDiscount: voucherDto.value,
+      voucherBatchId: '',
+    };
+
+    const foundUser = await this.voucherRepository.getVoucherByEmail(createVoucherDto);
+
+    const matchedVoucherType =
+      foundUser && foundUser.enigmaVouchers.map(voucher => voucher.voucherType === enigmaVoucher.voucherType);
+
+    // If a previous matching voucher has been found, return a message and stop
+    if (matchedVoucherType && matchedVoucherType.includes(true)) {
+      code = 203;
+      result = 'A voucher for this email address has already been created and emailed.';
+
+      return { code, result };
+    }
+
+    // If there hasn't been a voucher created for this email account, then create and email it
+    await this.enigmaService
+      .createEnigmaValueVoucher(createVoucherDto, voucherDto)
+      .then(async response => {
+        enigmaVoucher.voucherCode = response.voucherCode;
+        enigmaVoucher.voucherBatchId = response.voucherBatchId;
+
+        await this.voucherRepository.createVoucher(createVoucherDto, enigmaVoucher);
+
+        await this.voucherMailerService.sendSummerSalePromotion(createVoucherDto, enigmaVoucher);
+
+        code = 201;
+        result = 'Voucher has been sent to your email address.';
+      })
+      .catch(error => {
+        if (error) {
+          const voucherUnavailableRegex = /Not enough predefined voucher codes available/g;
+          const { detail } = error.response.data;
+
+          if (voucherUnavailableRegex.test(detail)) {
+            code = 203;
+            result = 'No more vouchers are available.';
+            return;
+          }
+
+          if (error.response.status >= 400) {
+            code = 400;
+            result = 'Voucher was not created. Please try again.';
+            return;
+          }
+
+          code = 500;
+          result = error;
+        }
+      });
+
+    return { code, result };
+  }
+
+  async createEmporioArmaniPromotion(createVoucherDto: CreateVoucherDto): Promise<{ code: number; result: string }> {
+    const voucherDto = {
+      type: 'EMPORIO_ARMANI_PROMOTION',
+      definitionId: '5dadb9f4ebd1f31230e18299',
+      value: 45,
+    } as VoucherDto;
+    const date = new Date();
+    let code: number;
+    let result: string;
+
+    // replace with data from enigma api
+    const enigmaVoucher: EnigmaDto = {
+      issueDate: date.toISOString(),
+      voucherCode: '',
+      voucherType: voucherDto.type,
+      voucherDiscount: voucherDto.value,
+      voucherBatchId: '',
+    };
+
+    const foundUser = await this.voucherRepository.getVoucherByEmail(createVoucherDto);
+
+    const matchedVoucherType =
+      foundUser && foundUser.enigmaVouchers.map(voucher => voucher.voucherType === enigmaVoucher.voucherType);
+
+    // If a previous matching voucher has been found, return a message and stop
+    if (matchedVoucherType && matchedVoucherType.includes(true)) {
+      code = 203;
+      result = 'A voucher for this email address has already been created and emailed.';
+
+      return { code, result };
+    }
+
+    // If there hasn't been a voucher created for this email account, then create and email it
+    await this.enigmaService
+      .createEnigmaDiscountVoucher(createVoucherDto, voucherDto)
+      .then(async response => {
+        enigmaVoucher.voucherCode = response.voucherCode;
+        enigmaVoucher.voucherBatchId = response.voucherBatchId;
+
+        await this.voucherRepository.createVoucher(createVoucherDto, enigmaVoucher);
+
+        await this.voucherMailerService.sendEmporioArmaniPromotion(createVoucherDto, enigmaVoucher);
+
+        code = 201;
+        result = 'Voucher has been sent to your email address.';
+      })
+      .catch(error => {
+        if (error) {
+          const voucherUnavailableRegex = /Not enough predefined voucher codes available/g;
+          const { detail } = error.response.data;
+
+          if (voucherUnavailableRegex.test(detail)) {
+            code = 203;
+            result = 'No more vouchers are available.';
+            return;
+          }
+
+          if (error.response.status >= 400) {
+            code = 400;
+            result = 'Voucher was not created. Please try again.';
+            return;
+          }
+
+          code = 500;
+          result = error;
+        }
+      });
+
+    return { code, result };
   }
 }

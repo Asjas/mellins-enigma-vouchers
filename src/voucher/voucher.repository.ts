@@ -1,15 +1,18 @@
 import { EntityRepository, Repository } from 'typeorm';
+
+// Entities
+import { User } from './entities/user.entity';
+import { EnigmaVoucher } from './entities/enigma.entity';
+
+// Dto
 import { CreateVoucherDto } from './dto/create-voucher.dto';
-import { EnigmaDto } from '../enigma/dto/enigma.dto';
-import { User } from './user.entity';
-import { EnigmaVoucher } from '../enigma/enigma.entity';
+import { EnigmaDto } from './dto/enigma.dto';
 
 @EntityRepository(User)
 export class VoucherRepository extends Repository<User> {
   async getVoucherByEmail(createVoucherDto: CreateVoucherDto): Promise<User> {
     const { email } = createVoucherDto;
     const result = await this.findOne({ where: { email }, relations: ['enigmaVouchers'] });
-    console.log(result);
 
     return result;
   }

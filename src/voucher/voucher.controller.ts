@@ -1,7 +1,10 @@
 import { Controller, Body, Post, UsePipes, ValidationPipe, Res } from '@nestjs/common';
+
+// Services
 import { VoucherService } from './voucher.service';
+
+// Dto
 import { CreateVoucherDto } from './dto/create-voucher.dto';
-import { VoucherDto } from './dto/voucher.dto';
 
 @Controller('voucher')
 export class VoucherController {
@@ -10,30 +13,32 @@ export class VoucherController {
   @Post('/fourwaysprecinct')
   @UsePipes(ValidationPipe)
   async createVoucherPrecinct(@Body() createVoucherDto: CreateVoucherDto, @Res() res): Promise<any> {
-    const voucher = { type: 'PRECINCT_PROMOTION', definitionId: '5d84b4dbbaaab1b6784fe62b', value: 2000 } as VoucherDto;
-    const { code, result } = await this.voucherService.createEnigmaValueVoucher(createVoucherDto, voucher);
+    const { code, result } = await this.voucherService.createVoucherPrecinct(createVoucherDto);
 
-    res.status(code).send(result);
+    return res.status(code).send(result);
   }
 
   @Post('/guesspromotion')
   @UsePipes(ValidationPipe)
   async createVoucherGuess(@Body() createVoucherDto: CreateVoucherDto, @Res() res): Promise<any> {
-    const voucher = {
-      type: 'GUESS_PROMOTION_SEP',
-      definitionId: '5d889652baaab1b67851fa61',
-      discount: 100,
-    } as VoucherDto;
-    const { code, result } = await this.voucherService.createEnigmaDiscountVoucher(createVoucherDto, voucher);
+    const { code, result } = await this.voucherService.createVoucherGuess(createVoucherDto);
 
-    res.status(code).send(result);
+    return res.status(code).send(result);
   }
 
-  // @Post()
-  // @UsePipes(ValidationPipe)
-  // async createVoucher(@Body() createVoucherDto: CreateVoucherDto, @Res() res): Promise<any> {
-  //   const { code, result } = await this.voucherService.createVoucher(createVoucherDto);
+  @Post('/summersalepromotion')
+  @UsePipes(ValidationPipe)
+  async createSummerSalePromotion(@Body() createVoucherDto: CreateVoucherDto, @Res() res): Promise<any> {
+    const { code, result } = await this.voucherService.createSummerSalePromotion(createVoucherDto);
 
-  //   res.status(code).send(result);
-  // }
+    return res.status(code).send(result);
+  }
+
+  @Post('/emporioarmanipromotion')
+  @UsePipes(ValidationPipe)
+  async createEmporioArmaniPromotion(@Body() createVoucherDto: CreateVoucherDto, @Res() res): Promise<any> {
+    const { code, result } = await this.voucherService.createEmporioArmaniPromotion(createVoucherDto);
+
+    return res.status(code).send(result);
+  }
 }

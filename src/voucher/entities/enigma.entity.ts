@@ -1,5 +1,7 @@
 import { BaseEntity, Column, Entity, PrimaryGeneratedColumn, ManyToOne } from 'typeorm';
-import { User } from '../voucher/user.entity';
+
+// Entities
+import { User } from './user.entity';
 
 @Entity()
 export class EnigmaVoucher extends BaseEntity {

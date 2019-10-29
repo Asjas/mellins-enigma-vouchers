@@ -1,7 +1,10 @@
+// Modules
 import { Module, HttpModule } from '@nestjs/common';
+import { ConfigModule } from '../../config/config.module';
+
+// Services
 import { EnigmaService } from './enigma.service';
-import { ConfigModule } from '../config/config.module';
-import { ConfigService } from '../config/config.service';
+import { ConfigService } from '../../config/config.service';
 
 @Module({
   imports: [

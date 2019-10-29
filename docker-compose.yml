@@ -1,8 +1,8 @@
-version: '3.7'
+version: "3.7"
 
 services:
   server:
-    image: asjas/voucher_server:v1.1.1
+    image: asjas/voucher_server:v1.1.3
     depends_on:
       - voucher_db
     deploy:
@@ -15,10 +15,10 @@ services:
         parallelism: 1
       resources:
         limits:
-          cpus: '0.20'
+          cpus: "0.20"
           memory: 200M
         reservations:
-          cpus: '0.10'
+          cpus: "0.10"
           memory: 100M
       labels:
         - traefik.frontend.rule=Host:vouchers-api.mellins.co.za
@@ -49,10 +49,10 @@ services:
         parallelism: 1
       resources:
         limits:
-          cpus: '0.20'
+          cpus: "0.20"
           memory: 200M
         reservations:
-          cpus: '0.10'
+          cpus: "0.10"
           memory: 100M
       restart_policy:
         condition: on-failure
@@ -66,8 +66,8 @@ services:
         - traefik.backend=traefik
         - traefik.port=8080
     ports:
-      - '443:443'
-      - '8080:8080'
+      - "443:443"
+      - "8080:8080"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - /root/mellins-enigma-vouchers/traefik/traefik.toml:/traefik.toml
@@ -93,10 +93,10 @@ services:
         parallelism: 1
       resources:
         limits:
-          cpus: '0.20'
+          cpus: "0.20"
           memory: 200M
         reservations:
-          cpus: '0.10'
+          cpus: "0.10"
           memory: 100M
       restart_policy:
         condition: on-failure
@@ -124,10 +124,10 @@ services:
         parallelism: 1
       resources:
         limits:
-          cpus: '0.20'
+          cpus: "0.20"
           memory: 200M
         reservations:
-          cpus: '0.10'
+          cpus: "0.10"
           memory: 100M
       restart_policy:
         condition: on-failure

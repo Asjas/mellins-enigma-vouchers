@@ -1,18 +1,20 @@
 import { Injectable, HttpService } from '@nestjs/common';
 import { map } from 'rxjs/operators';
-import { AxiosResponse } from 'axios';
-import { CreateVoucherDto } from '../voucher/dto/create-voucher.dto';
-import { VoucherDto } from 'src/voucher/dto/voucher.dto';
+
+// DTO
+import { CreateVoucherDto } from '../../voucher/dto/create-voucher.dto';
+import { VoucherDto } from '../../voucher/dto/voucher.dto';
+import { VoucherResultDto } from '../../voucher/dto/voucher-result.dto';
 
 @Injectable()
 export class EnigmaService {
-  constructor(private readonly http: HttpService) {}
+  constructor(private readonly _http: HttpService) {}
 
-  async createEnigmaValueVoucher(createVoucherDto: CreateVoucherDto, voucher: VoucherDto): Promise<AxiosResponse<any>> {
+  createEnigmaValueVoucher(createVoucherDto: CreateVoucherDto, voucherDto: VoucherDto): Promise<VoucherResultDto> {
     const { email } = createVoucherDto;
-    const { definitionId, value } = voucher;
+    const { definitionId, value } = voucherDto;
 
-    return this.http
+    return this._http
       .post(`/mellins/definitions/${definitionId}/vouchers`, {
         externalReferenceCode: email,
         definition: {
@@ -25,14 +27,11 @@ export class EnigmaService {
       .toPromise();
   }
 
-  async createEnigmaDiscountVoucher(
-    createVoucherDto: CreateVoucherDto,
-    voucher: VoucherDto,
-  ): Promise<AxiosResponse<any>> {
+  createEnigmaDiscountVoucher(createVoucherDto: CreateVoucherDto, voucherDto: VoucherDto): Promise<VoucherResultDto> {
     const { email } = createVoucherDto;
-    const { definitionId, discount } = voucher;
+    const { definitionId, discount } = voucherDto;
 
-    return this.http
+    return this._http
       .post(`/mellins/definitions/${definitionId}/vouchers`, {
         externalReferenceCode: email,
         definition: {

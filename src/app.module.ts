@@ -1,10 +1,13 @@
+// Modules
 import { Module } from '@nestjs/common';
 import { MailerModule } from '@nest-modules/mailer';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { VoucherModule } from './voucher/voucher.module';
 import { ConfigModule } from './config/config.module';
-import { ConfigService } from './config/config.service';
 import { HealthcheckModule } from './healthcheck/healthcheck.module';
+
+// Services
+import { ConfigService } from './config/config.service';
 
 @Module({
   imports: [

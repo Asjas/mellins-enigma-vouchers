@@ -1,4 +1,7 @@
+// Modules
 import { Module } from '@nestjs/common';
+
+// Services
 import { ConfigService } from './config.service';
 
 const envFile = process.env.NODE_ENV !== 'production' ? '.env' : '.env.prod';
