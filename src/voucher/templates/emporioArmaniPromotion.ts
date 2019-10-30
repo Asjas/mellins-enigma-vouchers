@@ -20,7 +20,14 @@ export const emporioArmaniPromotion: any = (voucher: string) =>
 
     <mj-section padding-bottom="10px">
       <mj-column>
-        <mj-image src="http://mellins.co.za/wp-content/uploads/2019/10/SUMMER-SALE-BB1.jpg" width="700px"></mj-image>
+        <mj-image src="http://mellins.co.za/wp-content/uploads/2019/10/eaimage1.jpg" width="300px"></mj-image>
+      </mj-column>
+      <mj-column width="300px">
+        <mj-text font-size="36px" font-weight="700" align="center" padding-top="20px">R 500 OFF<br /></mj-text>
+        <mj-text font-size="26px" font-weight="700" align="center" padding-top="0">&<br /></mj-text>
+        <mj-text font-size="22px" font-weight="700" align="center" padding-top="0">FREE ZEISS LENS WIPES<br /></mj-text>
+        <mj-text font-size="16px" align="center" padding-top="20px">when purchasing an optical frame with ZEISS lenses<br /></mj-text>
+        <mj-text font-size="16px" align="center" padding-top="120px" vertical-align="bottom">Available until 31 October 2019</mj-text>
       </mj-column>
     </mj-section>
 
@@ -29,19 +36,16 @@ export const emporioArmaniPromotion: any = (voucher: string) =>
         <mj-text font-size="14px" line-height="22px" color="#8a8a8a">
           <ul>
             Terms and Conditions
-            <li>This promotion applies to unscripted sunglasses <strong>frames only</strong>. If sunglasses are scripted, the discount will only apply to the sunglasses frame (and not the lenses).
+            <li>This offer is only valid if a customer buys a new Emporio Armani optical frame with ZEISS lenses
             </li>
-            <li>The discount will be applied to the cheaper pair of sunglasses.
+            <li>In order to qualify, your unique promotional code has to be presented in-store
             </li>
-            <li>This promotion is only valid if both pairs of sunglasses are purchased simultaneously.
+            <li>This offer is valid until 30 November 2019
             </li>
-            <li>This promotion is only valid for cash/card purchases.  No medical aid claims or debit orders.
+            <li>This offer cannot be combined with other offers
             </li>
-            <li>The discount on a second pair of sunglasses is valid either in-store or online.
+            <li>Only one offer per customer
             </li>
-            <li>Customers with a valid unique code will qualify for free ZEISS lens wipes when purchasing a second pair of sunglasses.  This will only be available for use in-store and not online.</li>
-            <li>This offer cannot be combined with other offers.</li>
-            <li>This offer is valid until 31 December 2019.</li>
           </ul>
         </mj-text>
       </mj-column>

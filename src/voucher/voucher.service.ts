@@ -234,7 +234,7 @@ export class VoucherService {
   async createEmporioArmaniPromotion(createVoucherDto: CreateVoucherDto): Promise<{ code: number; result: string }> {
     const voucherDto = {
       type: 'EMPORIO_ARMANI_PROMOTION',
-      definitionId: '5dadb9f4ebd1f31230e18299',
+      definitionId: '5da6d1ddebd1f31230de1ec4',
       value: 45,
     } as VoucherDto;
     const date = new Date();

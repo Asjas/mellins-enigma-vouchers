@@ -35,6 +35,7 @@ export class ConfigService {
       MYSQL_USERNAME: Joi.string().required(),
       MYSQL_PASSWORD: Joi.string().required(),
       MYSQL_DATABASE: Joi.string().required(),
+      MYSQL_SYNCHRONIZE: Joi.bool().required(),
     });
 
     const { error, value: validatedEnvConfig } = Joi.validate(envConfig, envVarsSchema);
@@ -90,5 +91,8 @@ export class ConfigService {
   }
   get MYSQL_DATABASE(): string {
     return this.envConfig.MYSQL_DATABASE;
+  }
+  get MYSQL_SYNCHRONIZE(): boolean {
+    return Boolean(this.envConfig.MYSQL_SYNCHRONIZE);
   }
 }
