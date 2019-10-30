@@ -1,4 +1,4 @@
-FROM node:12.8.1
+FROM node:12.13.0
 
 EXPOSE 3000
 
