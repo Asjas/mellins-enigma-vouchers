@@ -13,7 +13,7 @@ export const guessPromotion: any = (voucher: string) =>
         <mj-image padding-bottom="15px" width="400px" src="https://cdn.shopify.com/s/files/1/0045/5632/4936/files/Mellins_top_logo.png?10964"></mj-image>
         <mj-divider border-color="#445a6a"></mj-divider>
         <mj-text padding-bottom="10px" font-size="28px" font-family="Roboto">Voucher</mj-text>
-        <mj-text padding-bottom="40px" font-size="16px" padding-bottom="25px" font-family="Raleway">Please find your voucher number here.</mj-text>
+        <mj-text padding-bottom="40px" font-size="16px" padding-bottom="25px" font-family="Raleway">Please find your voucher number here:</mj-text>
         <mj-text font-size="30px" align="center" padding="20px" font-family="Roboto" color="#ffffff" container-background-color="#445a6a">${voucher}</mj-text>
       </mj-column>
     </mj-section>

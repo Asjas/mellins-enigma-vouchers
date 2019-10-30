@@ -13,7 +13,7 @@ export const emporioArmaniPromotion: any = (voucher: string) =>
         <mj-image padding-bottom="15px" width="400px" src="https://cdn.shopify.com/s/files/1/0045/5632/4936/files/Mellins_top_logo.png?10964"></mj-image>
         <mj-divider border-color="#445a6a"></mj-divider>
         <mj-text padding-bottom="10px" font-size="28px" font-family="Roboto">Voucher</mj-text>
-        <mj-text padding-bottom="40px" font-size="16px" padding-bottom="25px" font-family="Raleway">Please find your voucher number here.</mj-text>
+        <mj-text padding-bottom="40px" font-size="16px" padding-bottom="25px" font-family="Raleway">Please find your voucher number here:</mj-text>
         <mj-text font-size="30px" align="center" padding="20px" font-family="Roboto" color="#ffffff" container-background-color="#445a6a">${voucher}</mj-text>
       </mj-column>
     </mj-section>
@@ -38,7 +38,7 @@ export const emporioArmaniPromotion: any = (voucher: string) =>
             Terms and Conditions
             <li>This offer is only valid if a customer buys a new Emporio Armani optical frame with ZEISS lenses
             </li>
-            <li>In order to qualify, your unique promotional code has to be presented in-store
+            <li>Customers with a valid unique code will qualify for free ZEISS lens wipes when purchasing an Emporio Armani optical frame with ZEISS lenses.
             </li>
             <li>This offer is valid until 30 November 2019
             </li>
