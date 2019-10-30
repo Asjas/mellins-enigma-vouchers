@@ -60,7 +60,6 @@ export const emporioArmaniPromotion: any = (voucher: string) =>
       <mj-column padding-left="50px">
         <mj-text font-size="18px" align="left" padding-bottom="5px" font-family="Roboto">Follow us</mj-text>
         <mj-social align="left">
-          <mj-social-element name="twitter" href="https://twitter.com/MellinsiStyle" alt="twitter" />
           <mj-social-element name="facebook" href="https://www.facebook.com/mellinsistyle/" alt="facebook" />
           <mj-social-element name="instagram" href="https://www.instagram.com/mellinsistyle/?hl=en" alt="instagram" />
         </mj-social>
