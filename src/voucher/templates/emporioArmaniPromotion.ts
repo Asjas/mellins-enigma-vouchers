@@ -23,7 +23,7 @@ export const emporioArmaniPromotion: any = (voucher: string) =>
         <mj-image src="http://mellins.co.za/wp-content/uploads/2019/10/eaimage1.jpg" width="300px"></mj-image>
       </mj-column>
       <mj-column width="300px">
-        <mj-text font-size="36px" font-weight="700" align="center" padding-top="20px">R 500 OFF<br /></mj-text>
+        <mj-text font-size="36px" font-weight="700" align="center" padding-top="60px">R 500 OFF<br /></mj-text>
         <mj-text font-size="26px" font-weight="700" align="center" padding-top="0">&<br /></mj-text>
         <mj-text font-size="22px" font-weight="700" align="center" padding-top="0">FREE ZEISS LENS WIPES<br /></mj-text>
         <mj-text font-size="16px" align="center" padding-top="20px">when purchasing an optical frame with ZEISS lenses<br /></mj-text>
