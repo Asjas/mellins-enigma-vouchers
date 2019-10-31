@@ -20,7 +20,7 @@ export const summerSalePromotion: any = (voucher: string) =>
 
     <mj-section padding-bottom="10px">
       <mj-column>
-        <mj-image src="http://mellins.co.za/wp-content/uploads/2019/10/Landscape-google-1080-x-1920-px-2.jpg" width="700px"></mj-image>
+        <mj-image src="http://mellins.co.za/wp-content/uploads/2019/10/summer_promo.jpg" width="700px"></mj-image>
       </mj-column>
     </mj-section>
 
