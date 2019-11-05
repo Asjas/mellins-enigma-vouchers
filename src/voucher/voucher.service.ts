@@ -265,7 +265,7 @@ export class VoucherService {
 
     // If there hasn't been a voucher created for this email account, then create and email it
     await this.enigmaService
-      .createEnigmaDiscountVoucher(createVoucherDto, voucherDto)
+      .createEnigmaValueVoucher(createVoucherDto, voucherDto)
       .then(async response => {
         enigmaVoucher.voucherCode = response.voucherCode;
         enigmaVoucher.voucherBatchId = response.voucherBatchId;
