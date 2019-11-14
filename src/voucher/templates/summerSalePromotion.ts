@@ -29,7 +29,7 @@ export const summerSalePromotion: any = (voucher: string) =>
         <mj-text font-size="14px" line-height="22px" color="#8a8a8a">
           <ul>
             Terms and Conditions
-            <li>This promotion applies to unscripted sunglasses <strong>frames only</strong>. If sunglasses are scripted, the discount will only apply to the sunglasses frame (and not the lenses).
+            <li>This promotion applies to unscripted sunglasses. If sunglasses are scripted, the discount will only apply to the sunglasses frame (and not the lenses).
             </li>
             <li>The discount will be applied to the cheaper pair of sunglasses.
             </li>
