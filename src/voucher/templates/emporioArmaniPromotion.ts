@@ -27,7 +27,7 @@ export const emporioArmaniPromotion: any = (voucher: string) =>
         <mj-text font-size="26px" font-weight="700" align="center" padding-top="0">&<br /></mj-text>
         <mj-text font-size="22px" font-weight="700" align="center" padding-top="0">FREE ZEISS LENS WIPES<br /></mj-text>
         <mj-text font-size="16px" align="center" padding-top="20px">when purchasing an optical frame with ZEISS lenses<br /></mj-text>
-        <mj-text font-size="16px" align="center" padding-top="120px" vertical-align="bottom">Available until 31 October 2019</mj-text>
+        <mj-text font-size="16px" align="center" padding-top="120px" vertical-align="bottom">Available until 30 November 2019</mj-text>
       </mj-column>
     </mj-section>
 
